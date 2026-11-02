@@ -1,0 +1,71 @@
+{
+  "title": "Anza coastal elevation model data",
+  "version": "1.0.0",
+  "license": "CC BY 4.0; see the root DATA_LICENSE.md file",
+  "authors": "Amine Bouhadi; Lamiae Khali Issa; Ahmed Raissouni; Abdelkrim El Arrim",
+  "image": {
+    "path": "reference/raw/1.tif",
+    "source_product": "Sentinel-2 (author-reported; original product identifier and product metadata are not included)",
+    "acquisition_date": "2021-12-10 (author-reported from S2_20211210; not independently verified from the original product)",
+    "crs": "EPSG:32629",
+    "shape_bands_rows_columns": [
+      3,
+      202,
+      210
+    ],
+    "dtype": "uint8",
+    "pixel_size_m": [
+      10,
+      10
+    ],
+    "bands": [
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "radiometry": "Stored 0–255 RGB values; reflectance calibration unknown."
+  },
+  "survey": {
+    "producer_on_plan": "GEOMAITRISE SARL AU",
+    "client_on_plan": "TANGER MED ENGINEERING",
+    "plan_dossier": "418A22",
+    "plan_date": "2022-11",
+    "field_dates": null,
+    "vertical_datum": null,
+    "vertical_units": "Nominal metres, unconfirmed by primary survey report",
+    "horizontal_projection": "Lambert Zone 2/Clarke 1880; EPSG:26192 candidate consistent with plan",
+    "original_target_generation_chain": null
+  },
+  "patches": {
+    "n": 13286,
+    "shape": [
+      9,
+      9,
+      6
+    ],
+    "stride": 3,
+    "coordinate_convention": "Zero-based top-left row and column in the prepared EN array",
+    "target": "Signed centre elevation; includes positive land targets; not water depth",
+    "channels": "Linear interpolation of three RGB channels; not six measured spectral bands"
+  },
+  "spatial_counts": {
+    "train": 7884,
+    "val": 1898,
+    "test": 1898,
+    "excluded": 1606
+  },
+  "historical_counts": {
+    "train": 10628,
+    "val": 1329,
+    "test": 1329
+  },
+  "common_random_status": "Membership provided only; no reported training on this protocol",
+  "historical_warning": "Earlier memberships overwritten; all recoverable test patches share training pixels",
+  "spatial_warning": "One scene, seed and partition; no shared input pixels but no external validation",
+  "duplicate_omissions": [
+    "reference/survey/1.tif duplicates reference/raw/1.tif",
+    "DWG .bak duplicates original DWG"
+  ],
+  "archive_omissions": "January checkpoints and redundant historical maps are not included in this release",
+  "access_status": "Public release; study data and derived data are provided under CC BY 4.0 as declared by the corresponding author"
+}

@@ -1,0 +1,72 @@
+{
+  "deliveries": [
+    {
+      "role": "bathymetry",
+      "file": "POINTS BATHYMETRIQUE.txt",
+      "n_rows": 24508,
+      "duplicate_xy": 0,
+      "x_min": 88860.249,
+      "x_max": 90710.249,
+      "y_min": 390327.239,
+      "y_max": 392207.239,
+      "z_min": -22.82,
+      "z_max": 3.69,
+      "z_negative_n": 23170,
+      "unique_x": 186,
+      "unique_y": 189,
+      "median_unique_x_step": 10.0,
+      "median_unique_y_step": 10.0,
+      "sha256": "db016ae618beba72ffa4b42c1c87e708e1228dbb235c1a820f5a8a2e90c0ced4",
+      "candidate_crs": "EPSG:26192",
+      "inside_EN_target_bounds_fraction": 0.982658723682063,
+      "candidate_nearest_raster_difference": {
+        "n": 24083,
+        "rmse": 2.156130962814331,
+        "mae": 1.930418114526761,
+        "medae": 1.7512614440917975,
+        "bias": -1.8719243867784696,
+        "r2": 0.8999931472602778,
+        "p95_abs_error": 3.7710293941497794
+      }
+    },
+    {
+      "role": "topography",
+      "file": "POINTS LEVE TOPOGERAPHIQUE.txt",
+      "n_rows": 2297,
+      "duplicate_xy": 0,
+      "x_min": 90278.182,
+      "x_max": 90952.504,
+      "y_min": 390280.828,
+      "y_max": 392303.055,
+      "z_min": 1.114,
+      "z_max": 22.968,
+      "z_negative_n": 0,
+      "unique_x": 2293,
+      "unique_y": 2295,
+      "median_unique_x_step": 0.16800000000512227,
+      "median_unique_y_step": 0.4505000000062864,
+      "sha256": "a2fa42e9e9d41a997abbaaf09ceb39671f7b89bb476a3512146405144aa93f77",
+      "candidate_crs": "EPSG:26192",
+      "inside_EN_target_bounds_fraction": 0.9952111449717023,
+      "candidate_nearest_raster_difference": {
+        "n": 2286,
+        "rmse": 10.012167523821645,
+        "mae": 8.34562002504982,
+        "medae": 7.543034951210022,
+        "bias": -8.329799297495404,
+        "r2": -2.0882535452081776,
+        "p95_abs_error": 16.391669369220732
+      }
+    }
+  ],
+  "date": "Plan title block: November 2022; exact field measurement dates not established",
+  "plan_source": "GEOMAITRISE SARL AU",
+  "plan_client": "TANGER MED ENGINEERING",
+  "plan_dossier": "418A22",
+  "plan_scale": "1/2500",
+  "vertical_datum": "not established; geodetic X Y Z transformation parameters are not a vertical sounding datum",
+  "horizontal_crs_status": "Plan confirms Lambert Zone 2, Clarke 1880, central meridian 5 deg 24 min W, latitude origin 29 deg 42 min N, false easting 500000 m and false northing 300000 m, scale 0.999615596. EPSG:26192 is consistent with these projection parameters. Plan datum-translation direction is unspecified.",
+  "units_status": "Projection constants explicitly in metres. Vertical z units are treated as nominal metres pending survey documentation. DWG INSUNITS=4 is an insertion-unit setting and does not establish vertical survey units.",
+  "dwg_status": "TEXT, MTEXT, ATTRIB and ATTDEF extracted with AutoCAD Core Console 2023 from a working copy. AutoCAD changed the working DWG file; it is retained in qa/dwg_after_autocad.dwg. The SDB original remained unchanged, and reference/survey was restored from the verified original. See audit/dwg_text.tsv (Windows-1252), dwg_header.txt and dwg_titleblock.txt.",
+  "note": "Bathymetry points have a regular lattice. Row count is not claimed as an independent sounding count. Raster differences test consistency; they are not independent validation."
+}

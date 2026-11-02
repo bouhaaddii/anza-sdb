@@ -1,0 +1,37 @@
+{
+  "rgb_raw_rebuild_max_abs": 0.0,
+  "target_raw_rebuild_max_abs": 0.0,
+  "patches_exact": true,
+  "labels_exact": true,
+  "n_patches": 13286,
+  "window": 9,
+  "stride": 3,
+  "input_shape": [
+    13286,
+    9,
+    9,
+    6
+  ],
+  "target_range": [
+    -22.252811431884766,
+    22.719606399536133
+  ],
+  "scope": "Faithful EN inputs; RGB band interpolation, original grid mismatch, and signed target retained.",
+  "legacy_test_n": 1329,
+  "legacy_train_n": 10628,
+  "legacy_val_n": 1329,
+  "test_patches_overlapping_train": 1329,
+  "test_overlap_fraction": 1.0,
+  "test_positive_target_n": 313,
+  "legacy_plot_filter_n": 1289,
+  "spatial_counts": {
+    "train": 7884,
+    "val": 1898,
+    "test": 1898
+  },
+  "spatial_row_boundaries": [
+    168,
+    224
+  ],
+  "spatial_gap_pixels": 9
+}

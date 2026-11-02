@@ -1,0 +1,25 @@
+{
+  "model": "cnn_bilstm",
+  "protocol": "spatial",
+  "seed": 20260908,
+  "epochs_max": 300,
+  "batch_size": 512,
+  "learning_rate": 0.0001,
+  "dropout": 0.3,
+  "patience": 50,
+  "loss_weights": null,
+  "input_sha256": "e5a2d504ed78aaa4917f3067f0ac872809a9d7b5658ae3c37beaa6625ee89b2e",
+  "split_sha256": "791dc63cd7452bf16d5d19c530180e0e67e5d89e21101c769d5ebe1ecfd90e2a",
+  "scientific_functions_sha256": "ef1500227fc4a24d12905d01221104c90e452802a147986fbe016aa189443ac9",
+  "counts": {
+    "train": 7884,
+    "val": 1898,
+    "test": 1898
+  },
+  "tensorflow": "2.13.0",
+  "numpy": "1.26.4",
+  "devices": [
+    "PhysicalDevice(name='/physical_device:CPU:0', device_type='CPU')"
+  ],
+  "scope": "New validation protocol using unchanged EN inputs, architectures, losses and labels. Internal sensitivity analysis; source metadata unresolved."
+}

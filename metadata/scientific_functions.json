@@ -1,0 +1,14 @@
+{
+  "source": "Authoritative EN model and label definitions",
+  "functions": {
+    "build_sdb_cnn": "370b55d319f2c8bd6217f3d6da9b063306a0229099f22120a9819c43f661b71f",
+    "build_pi_cnn": "c1cf409a7925f97f899eb0d7ce28c9f433cd3907c259b948964f2846c3a0296b",
+    "build_cnn_bilstm": "b95864be56c1e3afac5f91a3562c58be37560598a183d21f4ac2cfbc8b9bdd61",
+    "build_fcnn": "289fc8228ff1a100b76e9cb6f793f8d47eba0642539cd9280503c8d15a3fec48",
+    "build_seabed_net": "461973bde80ffd57e69cc08ec95997eb5fe88328f021cc70bed4a50b422a6744",
+    "prepare_seabed_labels": "182977dc72d035060ae7b3f89b81205d21b7c9a17906baabf756da56c42d176b",
+    "create_model": "5ab89e5707ed1cceca3bf4926c2c9994148913bc0d3b1a61adb77716e20d3cf9"
+  },
+  "source_file_sha256": "ef1500227fc4a24d12905d01221104c90e452802a147986fbe016aa189443ac9",
+  "scope": "Seven unchanged functions; original comments are historical labels, not verified physical interpretations."
+}

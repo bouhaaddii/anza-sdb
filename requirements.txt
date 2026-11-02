@@ -1,0 +1,12 @@
+# Proposed compatible baseline for a NEW Python 3.10 or 3.11 environment.
+# Not used for the reported runs and not installation-tested here.
+# Use the existing EN .venv to reproduce the recorded numerical environment.
+tensorflow==2.13.0
+numpy==1.24.3
+scipy==1.10.1
+pandas==2.0.3
+rasterio==1.3.9
+h5py==3.9.0
+matplotlib==3.7.5
+scikit-learn==1.3.2
+Pillow==10.4.0
