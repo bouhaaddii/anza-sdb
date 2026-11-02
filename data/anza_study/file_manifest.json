@@ -17,8 +17,8 @@
     },
     {
       "path": "audit/image_quality.json",
-      "bytes": 3257,
-      "sha256": "53cf3b9494a1a6f182941f29adcaa55d67f6c4bd42706a0d0475e06492056d03",
+      "bytes": 6793,
+      "sha256": "2408140fac3657293e50c31bc42b96b0c262dbe447d586d0fdc6f1463eaca373",
       "origin_in_prior_rebuild": "audit/image_quality.json",
       "license": "CC BY 4.0; see DATA_LICENSE.md"
     },
@@ -38,8 +38,8 @@
     },
     {
       "path": "dataset_metadata.json",
-      "bytes": 2528,
-      "sha256": "d50dbf381e88e15cf71201d3b7f1b2e11c3ce358ea458c591eb3f016959abf5b",
+      "bytes": 3505,
+      "sha256": "738706bf2db8aa4c36a4045171dec1f3fda98d6490adaacda276eab6faa4328e",
       "origin_in_prior_rebuild": "publication_v2/build_release.py",
       "license": "CC BY 4.0; see DATA_LICENSE.md"
     },
@@ -737,5 +737,5 @@
       "license": "CC BY 4.0; see DATA_LICENSE.md"
     }
   ],
-  "total_bytes": 108367646
+  "total_bytes": 108372279
 }

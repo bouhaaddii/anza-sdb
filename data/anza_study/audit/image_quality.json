@@ -142,12 +142,106 @@
     }
   ],
   "source_status": {
-    "sensor": "Sentinel-2 (author-reported; not independently verified from product metadata)",
-    "product_identifier": "not present in the released files",
-    "acquisition_date": "2021-12-10 (author-reported from S2_20211210; not independently verified from product metadata)",
-    "processing_level": "not established",
-    "cloud_mask": "not supplied",
-    "reflectance_calibration": "not established",
-    "note": "The author identifies the image as Sentinel-2 S2_20211210. The source product identifier and original product metadata are not included, so sensor and acquisition date are author-reported rather than independently verified."
+    "sensor": "Sentinel-2A MSI, verified by exact pixel match to the SAFE product TCI.",
+    "product_identifier": "S2A_MSIL2A_20211210T112451_N0500_R037_T29RMP_20221228T204212.SAFE",
+    "acquisition_date": "2021-12-10 (verified from SAFE metadata)",
+    "processing_level": "MSI Level-2A; processing baseline 05.00",
+    "product_generation_date": "2022-12-28",
+    "component": "TCI_10m.jp2, 10 m true-colour display composite",
+    "exact_crop_match": true,
+    "crop_window_in_source_tci": {
+      "row_offset": 2985,
+      "column_offset": 3475,
+      "height": 202,
+      "width": 210
+    },
+    "product_level_cloudy_pixel_percentage": 0.016484,
+    "study_area_scene_classification_20m": {
+      "total_cells_20m": 10605,
+      "cloud_shadow": {
+        "class_code": 3,
+        "count": 3,
+        "percent": 0.0283
+      },
+      "medium_probability_cloud": {
+        "class_code": 8,
+        "count": 27,
+        "percent": 0.2546
+      },
+      "snow_or_ice": {
+        "class_code": 11,
+        "count": 494,
+        "percent": 4.6582
+      }
+    },
+    "quality_reports": "General, geometric, radiometric and sensor checks passed in product reports; see source metadata below.",
+    "reflectance_calibration": "The released input is an 8-bit TCI display image, not the calibrated BOA reflectance bands.",
+    "note": "The original SAFE product is not bundled; its exact identifier and reproducible source component are recorded below."
+  },
+  "radiometry": "8-bit Sentinel-2 Level-2A TCI true-colour display composite; not calibrated BOA reflectance bands.",
+  "sentinel2_source_metadata": {
+    "sensor": "Sentinel-2A MSI",
+    "product_identifier": "S2A_MSIL2A_20211210T112451_N0500_R037_T29RMP_20221228T204212.SAFE",
+    "product_level": "MSI Level-2A",
+    "processing_baseline": "05.00",
+    "product_start_time_utc": "2021-12-10T11:24:51.024Z",
+    "tile_sensing_time_utc": "2021-12-10T11:32:55.869028Z",
+    "acquisition_date": "2021-12-10",
+    "product_generation_time_utc": "2022-12-28T20:42:12Z",
+    "tile": "T29RMP",
+    "product_crs": "EPSG:32629",
+    "source_component": "GRANULE/L2A_T29RMP_A033782_20211210T112448/IMG_DATA/R10m/T29RMP_20211210T112451_TCI_10m.jp2",
+    "component_description": "10 m, three-channel, 8-bit true-colour display image; not calibrated BOA reflectance bands.",
+    "input_raster": "reference/raw/1.tif",
+    "input_raster_crs": "EPSG:32629",
+    "input_raster_shape_bands_rows_columns": [
+      3,
+      202,
+      210
+    ],
+    "crop_window_in_source_tci": {
+      "row_offset": 2985,
+      "column_offset": 3475,
+      "height": 202,
+      "width": 210
+    },
+    "crop_match": "Exact pixel-for-pixel match in all three channels; 42,420 of 42,420 channel values match.",
+    "product_level_cloudy_pixel_percentage": 0.016484,
+    "quality_report_status": {
+      "datastrip": {
+        "GENERAL_QUALITY": "PASSED",
+        "GEOMETRIC_QUALITY": "PASSED",
+        "RADIOMETRIC_QUALITY": "PASSED",
+        "SENSOR_QUALITY": "PASSED"
+      },
+      "tile": {
+        "GENERAL_QUALITY": "PASSED",
+        "GEOMETRIC_QUALITY": "PASSED",
+        "SENSOR_QUALITY": "PASSED",
+        "L2A_QUALITY": "PASSED"
+      }
+    },
+    "study_area_scene_classification_20m": {
+      "total_cells_20m": 10605,
+      "cloud_shadow": {
+        "class_code": 3,
+        "count": 3,
+        "percent": 0.0283
+      },
+      "medium_probability_cloud": {
+        "class_code": 8,
+        "count": 27,
+        "percent": 0.2546
+      },
+      "snow_or_ice": {
+        "class_code": 11,
+        "count": 494,
+        "percent": 4.6582
+      }
+    },
+    "mask_use": "Quality layers are available in the SAFE product; no cloud or scene-class mask was applied to the study model input.",
+    "required_modified_data_attribution": "Contains modified Copernicus Sentinel data 2021.",
+    "official_legal_notice": "https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice",
+    "source_validation": "Product ID, acquisition date, processing level, generation time and quality summaries were read from SAFE XML metadata. Raster identity was independently checked by reading the aligned TCI crop and comparing all RGB values."
   }
 }

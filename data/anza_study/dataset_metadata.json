@@ -5,8 +5,8 @@
   "authors": "Amine Bouhadi; Lamiae Khali Issa; Ahmed Raissouni; Abdelkrim El Arrim",
   "image": {
     "path": "reference/raw/1.tif",
-    "source_product": "Sentinel-2 (author-reported; original product identifier and product metadata are not included)",
-    "acquisition_date": "2021-12-10 (author-reported from S2_20211210; not independently verified from the original product)",
+    "source_product": "S2A_MSIL2A_20211210T112451_N0500_R037_T29RMP_20221228T204212.SAFE",
+    "acquisition_date": "2021-12-10",
     "crs": "EPSG:32629",
     "shape_bands_rows_columns": [
       3,
@@ -23,7 +23,33 @@
       "Green",
       "Blue"
     ],
-    "radiometry": "Stored 0–255 RGB values; reflectance calibration unknown."
+    "radiometry": "Three 8-bit RGB display channels; not calibrated BOA reflectance bands.",
+    "product_generation_date": "2022-12-28",
+    "processing_level": "Sentinel-2A MSI Level-2A, baseline 05.00",
+    "component": "10 m TCI true-colour display image",
+    "source_match": "reference/raw/1.tif is an exact pixel-for-pixel crop of the product TCI_10m.jp2 (row offset 2985, column offset 3475; 202 × 210 pixels).",
+    "product_level_cloudy_pixel_percentage": 0.016484,
+    "study_area_scene_classification_20m": {
+      "total_cells_20m": 10605,
+      "cloud_shadow": {
+        "class_code": 3,
+        "count": 3,
+        "percent": 0.0283
+      },
+      "medium_probability_cloud": {
+        "class_code": 8,
+        "count": 27,
+        "percent": 0.2546
+      },
+      "snow_or_ice": {
+        "class_code": 11,
+        "count": 494,
+        "percent": 4.6582
+      }
+    },
+    "quality_reports": "General, geometric, radiometric and sensor quality reports passed; quality layers were not used to mask model inputs.",
+    "source_citation_doi": "https://doi.org/10.5270/S2_-znk9xsj",
+    "required_attribution": "Contains modified Copernicus Sentinel data 2021."
   },
   "survey": {
     "producer_on_plan": "GEOMAITRISE SARL AU",

@@ -50,7 +50,7 @@ python -m pip install -r requirements.txt
 
 ## Data provenance and interpretation
 
-The author identifies the supplied image as Sentinel-2 `S2_20211210`, acquired on 10 December 2021. The original Sentinel-2 product identifier and product metadata are not included in the released files, so this date and sensor identification are author-reported. The raster contains three 8-bit RGB channels; reflectance calibration is not documented. The six channels in the prepared patches are interpolated from the RGB data and are not six measured spectral bands.
+The released input image is an exact pixel-for-pixel crop of the 10 m TCI true-colour component in Sentinel-2A MSI Level-2A product `S2A_MSIL2A_20211210T112451_N0500_R037_T29RMP_20221228T204212.SAFE`. Its SAFE metadata verify the 10 December 2021 acquisition date, processing baseline 05.00 and generation date of 28 December 2022. The released 202 × 210 GeoTIFF matches the source TCI at row offset 2985 and column offset 3475 in tile T29RMP (EPSG:32629). The model uses the product’s 8-bit display RGB composite, not its calibrated BOA reflectance bands. Product-level quality reports pass general, geometric, radiometric and sensor checks; product metadata report 0.016484% cloudy pixels. In the cropped 20 m scene-classification layer, 27 cells are labelled medium-probability cloud, 3 cloud shadow and 494 snow/ice. These classifier labels were not used to mask the model inputs. The six prepared channels are interpolated combinations of RGB and are not six measured spectral bands. Because the input is clipped from Sentinel data, the required attribution is “Contains modified Copernicus Sentinel data 2021.” See `data/anza_study/audit/image_quality.json` for the source metadata and crop check.
 
 The survey plan identifies GEOMAITRISE SARL AU as producer and TANGER MED ENGINEERING as client. The available plan does not establish field-survey dates, the target-generation workflow, confirmed vertical units, or a vertical datum. Targets are signed elevations in nominal metres, include positive land values, and must not automatically be interpreted as water depth. See `data/anza_study/dataset_metadata.json` and the audit files for the available provenance and its limitations.
 
@@ -62,7 +62,7 @@ Suggested citation for this release:
 
 > Bouhadi, A., Khali Issa, L., Raissouni, A., & El Arrim, A. (2026). *Anza Coastal Study: Code and Data* (Version 1.0.0) [Research code and data]. GitHub. https://github.com/bouhaaddii/anza-sdb
 
-The software is released under the MIT License in `LICENSE`. Study data and derived data are released under Creative Commons Attribution 4.0 International (CC BY 4.0); see `DATA_LICENSE.md`. Please cite the article when its final bibliographic details become available. No DOI is assigned to this GitHub repository version.
+The software is released under the MIT License in `LICENSE`. Study data and derived data are released under Creative Commons Attribution 4.0 International (CC BY 4.0); see `DATA_LICENSE.md`. The Copernicus image remains subject to the official [Sentinel Data Legal Notice](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice), including its required attribution for modified data. The ESA data citation DOI is [10.5270/S2_-znk9xsj](https://doi.org/10.5270/S2_-znk9xsj). Please cite the article when its final bibliographic details become available. No DOI is assigned to this GitHub repository version.
 
 ## Versioning
 
