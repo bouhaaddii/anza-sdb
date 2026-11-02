@@ -38,8 +38,8 @@
     },
     {
       "path": "dataset_metadata.json",
-      "bytes": 3505,
-      "sha256": "738706bf2db8aa4c36a4045171dec1f3fda98d6490adaacda276eab6faa4328e",
+      "bytes": 3878,
+      "sha256": "d0f9d0216396f0f70455a6a6dc242888fa42100744e3c34b8ff8343ffc350d95",
       "origin_in_prior_rebuild": "publication_v2/build_release.py",
       "license": "CC BY 4.0; see DATA_LICENSE.md"
     },
@@ -251,7 +251,7 @@
       "bytes": 7715933,
       "sha256": "e5a2d504ed78aaa4917f3067f0ac872809a9d7b5658ae3c37beaa6625ee89b2e",
       "origin_in_prior_rebuild": "prepared/patches.npz",
-      "license": "CC BY 4.0; see DATA_LICENSE.md"
+      "license": "Copernicus Sentinel Data Legal Notice; modified Sentinel data. Required attribution: Contains modified Copernicus Sentinel data 2021."
     },
     {
       "path": "prepared/spatial_split.npz",
@@ -307,7 +307,7 @@
       "bytes": 3237898,
       "sha256": "fd77b7c5c6c6ab8464fd2e5f8275fa10f0122cf64d733626622d87138b3cc115",
       "origin_in_prior_rebuild": "reference/data/ANZA_rgb.tif",
-      "license": "CC BY 4.0; see DATA_LICENSE.md"
+      "license": "Copernicus Sentinel Data Legal Notice; modified Sentinel data. Required attribution: Contains modified Copernicus Sentinel data 2021."
     },
     {
       "path": "reference/data/depth_ANZA.npy",
@@ -391,28 +391,28 @@
       "bytes": 25828112,
       "sha256": "d9cf9674a19f104854c886ab98394961505a02f0c0d59142eebf115daeae991a",
       "origin_in_prior_rebuild": "reference/data/rgbnss_ANZA.npy",
-      "license": "CC BY 4.0; see DATA_LICENSE.md"
+      "license": "Copernicus Sentinel Data Legal Notice; modified Sentinel data. Required attribution: Contains modified Copernicus Sentinel data 2021."
     },
     {
       "path": "reference/data/rgbnss_trn_ANZA.npy",
       "bytes": 20660960,
       "sha256": "af5ba0334cb0707859dde9482ebfb8a2dab7d3853292d1c10d2211387612dd95",
       "origin_in_prior_rebuild": "reference/data/rgbnss_trn_ANZA.npy",
-      "license": "CC BY 4.0; see DATA_LICENSE.md"
+      "license": "Copernicus Sentinel Data Legal Notice; modified Sentinel data. Required attribution: Contains modified Copernicus Sentinel data 2021."
     },
     {
       "path": "reference/data/rgbnss_tst_ANZA.npy",
       "bytes": 2583704,
       "sha256": "44c20c29c899e95aa350a9beeb3d19db5e1d68c4a08138e405a66508689e5d82",
       "origin_in_prior_rebuild": "reference/data/rgbnss_tst_ANZA.npy",
-      "license": "CC BY 4.0; see DATA_LICENSE.md"
+      "license": "Copernicus Sentinel Data Legal Notice; modified Sentinel data. Required attribution: Contains modified Copernicus Sentinel data 2021."
     },
     {
       "path": "reference/data/rgbnss_val_ANZA.npy",
       "bytes": 2583704,
       "sha256": "1a46417a60285f7f13186482a5330220337f7c86340ae7c9ee6772f437fd42a8",
       "origin_in_prior_rebuild": "reference/data/rgbnss_val_ANZA.npy",
-      "license": "CC BY 4.0; see DATA_LICENSE.md"
+      "license": "Copernicus Sentinel Data Legal Notice; modified Sentinel data. Required attribution: Contains modified Copernicus Sentinel data 2021."
     },
     {
       "path": "reference/data/seabed_pred_seabed_net_ANZA_20260415_163655.npy",
@@ -447,7 +447,7 @@
       "bytes": 128064,
       "sha256": "6a89338b4aefa823b269845ce2cba2c5937319cdfb095f9333cab8246e7daa34",
       "origin_in_prior_rebuild": "reference/raw/1.tif",
-      "license": "CC BY 4.0; see DATA_LICENSE.md"
+      "license": "Copernicus Sentinel Data Legal Notice; modified Sentinel data. Required attribution: Contains modified Copernicus Sentinel data 2021."
     },
     {
       "path": "reference/raw/2.tif",

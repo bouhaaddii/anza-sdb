@@ -62,7 +62,7 @@ Suggested citation for this release:
 
 > Bouhadi, A., Khali Issa, L., Raissouni, A., & El Arrim, A. (2026). *Anza Coastal Study: Code and Data* (Version 1.0.0) [Research code and data]. GitHub. https://github.com/bouhaaddii/anza-sdb
 
-The software is released under the MIT License in `LICENSE`. Study data and derived data are released under Creative Commons Attribution 4.0 International (CC BY 4.0); see `DATA_LICENSE.md`. The Copernicus image remains subject to the official [Sentinel Data Legal Notice](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice), including its required attribution for modified data. The ESA data citation DOI is [10.5270/S2_-znk9xsj](https://doi.org/10.5270/S2_-znk9xsj). Please cite the article when its final bibliographic details become available. No DOI is assigned to this GitHub repository version.
+The software is released under the MIT License in `LICENSE`. Author-created study materials and model-derived results for which the authors hold the relevant rights are released under Creative Commons Attribution 4.0 International (CC BY 4.0). Sentinel-derived image files and image inputs are identified individually in the data manifest and remain subject to the official [Sentinel Data Legal Notice](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice); the CC BY notice does not replace those terms. The required attribution for modified Copernicus data is “Contains modified Copernicus Sentinel data 2021.” The ESA data citation DOI is [10.5270/S2_-znk9xsj](https://doi.org/10.5270/S2_-znk9xsj). Please cite the article when its final bibliographic details become available. No DOI is assigned to this GitHub repository version.
 
 ## Versioning
 

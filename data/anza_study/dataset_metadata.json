@@ -1,7 +1,7 @@
 {
   "title": "Anza coastal elevation model data",
   "version": "1.0.0",
-  "license": "CC BY 4.0; see the root DATA_LICENSE.md file",
+  "license": "Mixed; see root DATA_LICENSE.md and file-level notices in file_manifest.json",
   "authors": "Amine Bouhadi; Lamiae Khali Issa; Ahmed Raissouni; Abdelkrim El Arrim",
   "image": {
     "path": "reference/raw/1.tif",
@@ -49,7 +49,8 @@
     },
     "quality_reports": "General, geometric, radiometric and sensor quality reports passed; quality layers were not used to mask model inputs.",
     "source_citation_doi": "https://doi.org/10.5270/S2_-znk9xsj",
-    "required_attribution": "Contains modified Copernicus Sentinel data 2021."
+    "required_attribution": "Contains modified Copernicus Sentinel data 2021.",
+    "license_notice": "Copernicus Sentinel Data Legal Notice; not relicensed under CC BY 4.0. Required attribution: Contains modified Copernicus Sentinel data 2021."
   },
   "survey": {
     "producer_on_plan": "GEOMAITRISE SARL AU",
@@ -93,5 +94,5 @@
     "DWG .bak duplicates original DWG"
   ],
   "archive_omissions": "January checkpoints and redundant historical maps are not included in this release",
-  "access_status": "Public release; study data and derived data are provided under CC BY 4.0 as declared by the corresponding author"
+  "access_status": "Public release; author-created study materials and model-derived results for which the authors hold the relevant rights are under CC BY 4.0. Sentinel-derived image files and image inputs remain under the Copernicus Sentinel Data Legal Notice; see file_manifest.json and DATA_LICENSE.md."
 }

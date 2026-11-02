@@ -1,15 +1,15 @@
-# Study data license
+# Data and source-data licenses
 
-The study data and derived data in `data/anza_study/` are released under the
-Creative Commons Attribution 4.0 International license (CC BY 4.0).
+Author-created study data, documentation, and model-derived results for which the authors hold the relevant rights are released under the Creative Commons Attribution 4.0 International license (CC BY 4.0). You may share and adapt those materials, including for commercial purposes, provided that you give appropriate credit, link to the license, and indicate whether changes were made.
 
-You may share and adapt these materials, including for commercial purposes,
-provided that you give appropriate credit, link to the license, and indicate
-whether changes were made. The license does not grant rights to names,
-trademarks, or other material outside the scope of the released data.
+This CC BY 4.0 grant does not override third-party terms. Sentinel-derived imagery and image-input files identified individually in `data/anza_study/file_manifest.json` are supplied under the applicable Copernicus Sentinel Data Legal Notice, not relicensed here under CC BY 4.0. The notice permits reproduction, distribution, public communication, adaptation, and modification subject to source acknowledgement. The required attribution for modified data is:
 
-Full legal code: <https://creativecommons.org/licenses/by/4.0/legalcode>
+> Contains modified Copernicus Sentinel data 2021.
 
-Suggested attribution: Bouhadi, A., Khali Issa, L., Raissouni, A., & El Arrim,
-A. (2026). *Anza Coastal Study: Code and Data*, version 1.0.0. See the
-repository README for the persistent project URL and provenance notes.
+Official notice: <https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice>
+
+The ESA Sentinel-2 Level-2A data citation DOI is <https://doi.org/10.5270/S2_-znk9xsj>.
+
+The software is released separately under the MIT License in `LICENSE`.
+
+Suggested attribution for CC BY study materials: Bouhadi, A., Khali Issa, L., Raissouni, A., & El Arrim, A. (2026). *Anza Coastal Study: Code and Data*, version 1.0.0. See the repository README for project details.
