@@ -40,7 +40,7 @@ def refresh_run_metadata(folds_dir: Path, site: str, vertical_reference: str) ->
         config["label_unit"] = "m"
         config["vertical_reference"] = vertical_reference
         config["measurement_note"] = (
-            "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+            "Errors are against the site's aggregated survey z values. The site-local vertical reference is separate from the other study site's port datum."
         )
         for key in ("scope", "important_scope"):
             if key in config:
@@ -56,7 +56,7 @@ def main() -> None:
     parser.add_argument("--data-path", type=Path, default=DEFAULT_DATA)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS)
     parser.add_argument("--site", default="Anza, Agadir, Morocco")
-    parser.add_argument("--vertical-reference", default="Local hydrographic zero of the Port of Agadir (user-reported)")
+    parser.add_argument("--vertical-reference", default="Hydrographic zero of the Port of Agadir (confirmed by the survey-data owner)")
     args = parser.parse_args()
     results_dir = args.results_dir
     folds_dir = results_dir / "folds"
@@ -68,16 +68,10 @@ def main() -> None:
             if not f.exists():
                 raise FileNotFoundError(f"Missing completed fold: {f}")
             part = pd.read_csv(f)
-            # Read old Anza runs as well as newly generated metre-labelled outputs.
-            aliases = {
-                "reference_m": "reference_nominal_units",
-                "prediction_m": "prediction_nominal_units",
-                "residual_m": "residual_nominal_units",
-            }
-            for current, legacy in aliases.items():
-                if current not in part.columns and legacy in part.columns:
-                    part[current] = part[legacy]
-            part = part.drop(columns=[legacy for legacy in aliases.values() if legacy in part.columns])
+            required = {"reference_m", "prediction_m", "residual_m"}
+            missing = required.difference(part.columns)
+            if missing:
+                raise ValueError(f"{f} lacks metre-labelled columns: {sorted(missing)}")
             part["model"] = name
             tables.append(part)
     oof = pd.concat(tables, ignore_index=True)
@@ -121,7 +115,7 @@ def main() -> None:
         "label_unit": "m",
         "vertical_reference": args.vertical_reference,
         "scope": "Out-of-fold spatial prediction within one NASA HLS S30 scene at 30 m. Survey labels are averaged by HLS pixel; the spatial folds are internal to this site and do not establish cross-site transfer.",
-        "warning": "The three spatial zones are the geographic units. Per-pixel confidence intervals and IID significance tests are not reported. Each site's error metrics are calculated against its own port-datum labels; these evaluations do not test cross-site transfer and the absolute z labels must not be pooled without a documented vertical connection.",
+        "warning": "The three spatial zones are the geographic units. Per-pixel confidence intervals and IID significance tests are not reported. Each site's error metrics are calculated against its own port-datum labels; these evaluations do not test cross-site transfer and absolute elevations are not pooled across the two local port zeros.",
         "summary": summary_rows,
         "fold_metrics": fold_rows,
         "depth_band_metrics": stratified_rows,

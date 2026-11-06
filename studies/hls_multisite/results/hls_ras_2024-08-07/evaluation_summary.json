@@ -1,9 +1,9 @@
 {
   "site": "Ras El Ma / Ras Kebdana, Morocco",
   "label_unit": "m",
-  "vertical_reference": "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)",
+  "vertical_reference": "Hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)",
   "scope": "Out-of-fold spatial prediction within one NASA HLS S30 scene at 30 m. Survey labels are averaged by HLS pixel; the spatial folds are internal to this site and do not establish cross-site transfer.",
-  "warning": "The three spatial zones are the geographic units. Per-pixel confidence intervals and IID significance tests are not reported. Each site's error metrics are calculated against its own port-datum labels; these evaluations do not test cross-site transfer and the absolute z labels must not be pooled without a documented vertical connection.",
+  "warning": "The three spatial zones are the geographic units. Per-pixel confidence intervals and IID significance tests are not reported. Each site's error metrics are calculated against its own port-datum labels; these evaluations do not test cross-site transfer and absolute elevations are not pooled across the two local port zeros.",
   "summary": [
     {
       "model": "CNN",

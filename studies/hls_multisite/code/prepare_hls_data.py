@@ -194,8 +194,8 @@ def make_dataset() -> dict:
         "survey_date": "2022-11-10 (confirmed by the user)",
         "survey_z_unit": "m (confirmed by the user)",
         "survey_time": "not documented",
-        "vertical_reference": "Local hydrographic zero of the Port of Agadir (reported by the user; not visible in the supplied survey-plan extract)",
-        "vertical_reference_status": "user-reported; documentary confirmation and levelling tie not supplied",
+        "vertical_reference": "Hydrographic zero of the Port of Agadir, Morocco (confirmed by the survey-data owner)",
+        "vertical_reference_status": "confirmed by the survey-data owner; no levelling tie to the Port of Ras Kebdana datum is documented",
         "quality_mask": "exclude fill=255, cloud bit 1, adjacent cloud/shadow bit 2, shadow bit 3, snow/ice bit 4; retain water bit 5 as a diagnostic",
         "training_unit": "one observation per 30 m HLS pixel; negative survey elevations averaged within pixel",
         "minimum_survey_points_per_pixel": 3,
@@ -223,7 +223,7 @@ def make_dataset() -> dict:
         "spatial_split": "three alongshore zones from the first principal coordinate axis; zones separated by at least the projected 9x9 patch footprint; boundaries rotate through test/validation/train roles",
         "pca_axis_xy": [float(v) for v in alongshore_axis],
         "pca_variance_ratio_axis1": float((singular_values[0] ** 2) / np.sum(singular_values ** 2)),
-        "source_label_caution": "Survey date and z units were confirmed by the user. The local Port of Agadir vertical reference was reported by the user but is not visible in the supplied survey-plan extract. Survey time, measurement uncertainty, and tide/water-level correction are not documented; metrics are errors against aggregated supplied labels. Do not compare absolute elevations with Ras Kebdana without a documented tie between the port zeros.",
+        "source_label_caution": "Survey date, z unit (metres), and reference to the hydrographic zero of the Port of Agadir were confirmed by the survey-data owner. Survey time, measurement uncertainty, and tide/water-level correction are not documented. Metrics describe errors against aggregated labels in the Anza local datum. Ras Kebdana uses a separate local port datum, and no vertical tie between the two port zeros is documented.",
         "sample_file": "data/processed/samples.npz",
     }
     (PROCESSED / "dataset_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")

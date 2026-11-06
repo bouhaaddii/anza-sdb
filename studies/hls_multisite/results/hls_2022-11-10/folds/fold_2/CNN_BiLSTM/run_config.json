@@ -35,8 +35,8 @@
   "parameter_count": 141697,
   "model_definition": "code/models.py",
   "important_scope": "One observation per 30 m HLS pixel; spatial calibration and testing use distinct buffered alongshore zones. Scores are site-specific and do not establish cross-site transfer or absolute-depth agreement between different port datums.",
-  "site": "Anza, Agadir, Morocco",
+  "site": "Anza / Agadir, Morocco",
   "label_unit": "m",
-  "vertical_reference": "Local hydrographic zero of the Port of Agadir (user-reported)",
-  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+  "vertical_reference": "Hydrographic zero of the Port of Agadir (confirmed by the survey-data owner)",
+  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is separate from the other study site's port datum."
 }

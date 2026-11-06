@@ -22,7 +22,7 @@
   },
   "site": "Ras El Ma / Ras Kebdana, Morocco",
   "label_unit": "m",
-  "vertical_reference": "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)",
+  "vertical_reference": "Hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)",
   "scope": "One observation per 30 m HLS pixel; spatial calibration and testing use distinct buffered alongshore zones. Scores are site-specific and do not establish cross-site transfer or absolute-depth agreement between different port datums.",
-  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is separate from the other study site's port datum."
 }

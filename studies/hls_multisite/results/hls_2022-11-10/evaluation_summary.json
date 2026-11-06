@@ -1,9 +1,9 @@
 {
-  "site": "Anza, Agadir, Morocco",
+  "site": "Anza / Agadir, Morocco",
   "label_unit": "m",
-  "vertical_reference": "Local hydrographic zero of the Port of Agadir (user-reported)",
+  "vertical_reference": "Hydrographic zero of the Port of Agadir (confirmed by the survey-data owner)",
   "scope": "Out-of-fold spatial prediction within one NASA HLS S30 scene at 30 m. Survey labels are averaged by HLS pixel; the spatial folds are internal to this site and do not establish cross-site transfer.",
-  "warning": "The three spatial zones are the geographic units. Per-pixel confidence intervals and IID significance tests are not reported. Each site's error metrics are calculated against its own port-datum labels; these evaluations do not test cross-site transfer and the absolute z labels must not be pooled without a documented vertical connection.",
+  "warning": "The three spatial zones are the geographic units. Per-pixel confidence intervals and IID significance tests are not reported. Each site's error metrics are calculated against its own port-datum labels; these evaluations do not test cross-site transfer and absolute elevations are not pooled across the two local port zeros.",
   "summary": [
     {
       "model": "CNN",
@@ -330,7 +330,7 @@
       "fold": 3,
       "n_pixels": 481,
       "rmse_m": 2.486200800885574,
-      "mae_m": 1.917980928998486,
+      "mae_m": 1.9179809289984855,
       "mean_bias_m": -1.4808832914451417,
       "median_absolute_error_m": 1.2127575351914341,
       "p95_absolute_error_m": 4.780002056040809,
@@ -1053,7 +1053,7 @@
       "n_pixels": 147,
       "rmse_m": 2.1627499046603496,
       "mae_m": 1.8719634896295172,
-      "mean_bias_m": -1.8080565922323981,
+      "mean_bias_m": -1.8080565922323983,
       "median_absolute_error_m": 1.768355701732009,
       "p95_absolute_error_m": 3.684068740074361,
       "r2": -0.2439859373860298
@@ -1064,8 +1064,8 @@
       "depth_band": "shallow_0_to_5",
       "n_pixels": 36,
       "rmse_m": 0.9827524829944271,
-      "mae_m": 0.7315864564433615,
-      "mean_bias_m": -0.5062001561818101,
+      "mae_m": 0.7315864564433614,
+      "mean_bias_m": -0.50620015618181,
       "median_absolute_error_m": 0.5909683827745078,
       "p95_absolute_error_m": 2.2068665538507988,
       "r2": -1.4866241556990896
@@ -1089,7 +1089,7 @@
       "n_pixels": 175,
       "rmse_m": 0.9111977826770741,
       "mae_m": 0.7579934675322144,
-      "mean_bias_m": 0.24114000942147584,
+      "mean_bias_m": 0.24114000942147576,
       "median_absolute_error_m": 0.7076544855851061,
       "p95_absolute_error_m": 1.6956288776274278,
       "r2": 0.7910604938509039

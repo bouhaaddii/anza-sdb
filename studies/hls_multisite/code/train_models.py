@@ -245,7 +245,7 @@ def main() -> None:
     parser.add_argument("--data-path", type=Path, default=DEFAULT_DATA)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--site", default="Anza, Agadir, Morocco")
-    parser.add_argument("--vertical-reference", default="Local hydrographic zero of the Port of Agadir (user-reported)")
+    parser.add_argument("--vertical-reference", default="Hydrographic zero of the Port of Agadir (confirmed by the survey-data owner)")
     args = parser.parse_args()
     pack = np.load(args.data_path, allow_pickle=False)
     selected = MODELS if "all" in args.models else args.models

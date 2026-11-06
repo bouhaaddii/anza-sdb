@@ -1,4 +1,4 @@
-pixel_id,fold,test_zone,row,col,reference_nominal_units,prediction_nominal_units,residual_nominal_units
+pixel_id,fold,test_zone,row,col,reference_m,prediction_m,residual_m
 r1018_c1195,2,1,1018,1195,-4.49,-7.1451454,-2.6551456
 r1018_c1196,2,1,1018,1196,-4.46,-6.2223663,-1.7623663
 r1019_c1193,2,1,1019,1193,-7.7444444,-8.675072,-0.93062735

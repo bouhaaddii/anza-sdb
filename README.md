@@ -61,6 +61,8 @@ The spatial partition prevents shared input pixels between training, validation,
 
 The separate [`studies/hls_multisite/`](studies/hls_multisite/) folder contains the complete executed HLS experiment for Anza and Ras El Ma/Ras Kebdana. It includes only the scripts used in this study, the selected input files, prepared data, saved fold predictions and weights, evaluation tables, and code-generated figures. The earlier 2021 RGB study at the repository root remains a separate project.
 
+The study-specific English README at [`studies/hls_multisite/README.md`](studies/hls_multisite/README.md) documents its inputs, local vertical references, methods, figures, saved results, and commands for regenerating the analysis.
+
 ### Inputs and provenance
 
 | Site | Survey date and label reference | HLS input | Retained samples |
