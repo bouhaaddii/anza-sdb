@@ -15,6 +15,7 @@ This repository provides the research code, study inputs, prepared datasets, arc
 - `data/anza_study/reproduced/`: retained predictions and paired reference–prediction tables.
 - `data/anza_study/tables/` and `data/anza_study/audit/`: derived tables, provenance notes, and validation checks.
 - `data/anza_study/file_manifest.json`: sizes and SHA-256 hashes for the released data files.
+- `studies/hls_multisite/`: a separate HLS S30 two-site experiment, including its executed scripts, selected source inputs, prepared samples, saved fold outputs, metrics, and figures. It does not replace the original 2021 RGB study above.
 
 ## Models
 
@@ -56,6 +57,58 @@ The survey plan identifies GEOMAITRISE SARL AU as producer and TANGER MED ENGINE
 
 The spatial partition prevents shared input pixels between training, validation, and test subsets. It covers one scene, one seed, and one partition and does not provide external validation. Historical results are retained for comparison; the original historical test partition contains patches that share input pixels with training. The README and archived metrics describe these limitations so the results are not mistaken for independent external validation.
 
+## Additional study: two-site HLS coastal elevation experiment
+
+The separate [`studies/hls_multisite/`](studies/hls_multisite/) folder contains the complete executed HLS experiment for Anza and Ras El Ma/Ras Kebdana. It includes only the scripts used in this study, the selected input files, prepared data, saved fold predictions and weights, evaluation tables, and code-generated figures. The earlier 2021 RGB study at the repository root remains a separate project.
+
+### Inputs and provenance
+
+| Site | Survey date and label reference | HLS input | Retained samples |
+| --- | --- | --- | ---: |
+| Anza / Agadir | 10 November 2022; z in metres; Port of Agadir hydrographic zero reported by the user | HLS S30 v2.0, tile T29RMP, acquired 10 November 2022 | 1,373 |
+| Ras El Ma / Ras Kebdana | 8 August 2024; z in metres; Port of Ras Kebdana hydrographic zero stated in the survey-plan cartouche | HLS S30 v2.0, tile T30SWD, acquired 7 August 2024 | 3,817 |
+
+Each scene uses the 30 m B02, B03, B04, and B08 reflectance bands and Fmask. HLS reflectance integers are multiplied by 0.0001. The scripts exclude fill, cloud, adjacent cloud/shadow, shadow, and snow/ice flags; the water flag is retained as a diagnostic. See the [NASA/USGS HLS v2.0 User Guide](https://lpdaac.usgs.gov/documents/1698/HLS_User_Guide_V2.pdf), the [HLS S30 product DOI](https://doi.org/10.5067/HLS/HLSS30.002), and `studies/hls_multisite/data/raw/sentinel2/scene_manifest.json` for product identifiers and selected files.
+
+Survey labels are aggregated to one observation per HLS pixel. The 9 × 9 input patches have a 120 m radius. Cells with fewer than three survey points and mixed-sign elevation cells are excluded. Ras El Ma's 10,595 exact duplicate XYZ records were removed; repeated XY positions are represented by their median z, with the observed 0.03 m spread documented in the processed-data metadata. Three alongshore spatial zones are separated by a patch-footprint buffer and rotated through the folds.
+
+The two surveys use distinct local port hydrographic zeros. Anza's vertical reference was reported by the user and is not documented in the supplied plan extract. Ras El Ma's HLS scene predates its survey by one day. There is no documented water-level correction, point-level uncertainty model, or vertical tie between the two port zeros. Therefore, the reported metrics are separate site-specific spatial evaluations; they do not demonstrate cross-site transfer, and absolute elevations or errors must not be pooled between sites.
+
+### Saved spatial holdout results
+
+| Site | Model with lowest pooled out-of-fold RMSE | RMSE (m) | MAE (m) |
+| --- | --- | ---: | ---: |
+| Anza / Agadir | StumpfRatio | 2.79 | 2.42 |
+| Ras El Ma / Ras Kebdana | RatioCNN | 0.50 | 0.40 |
+
+These are out-of-fold predictions from three buffered spatial folds within each site. They are not an independent external validation. Refer to the site-specific `evaluation_summary.json` files for the full seven-model results and fold variability, and to the figures for spatial patterns and error distributions. The metrics are errors against the aggregated survey labels in metres, not a claim of universally accurate bathymetry.
+
+### Run the scripts
+
+From the `studies/hls_multisite/` directory, create a Python 3.11 environment and install `code/requirements.txt`:
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r code/requirements.txt
+```
+
+Prepare both site datasets, train the seven models in three spatial folds, and regenerate the evaluations:
+
+```powershell
+python code/prepare_hls_data.py
+python code/prepare_ras_hls_data.py
+python code/train_models.py --data-path data/processed/samples.npz --results-dir results/hls_2022-11-10/folds --site "Anza, Agadir, Morocco" --vertical-reference "Local hydrographic zero of the Port of Agadir (user-reported)"
+python code/evaluate_results.py --data-path data/processed/samples.npz --results-dir results/hls_2022-11-10 --site "Anza, Agadir, Morocco" --vertical-reference "Local hydrographic zero of the Port of Agadir (user-reported)"
+python code/train_models.py --data-path data/processed/ras_el_ma_2024-08-08/samples.npz --results-dir results/hls_ras_2024-08-07/folds --site "Ras El Ma / Ras Kebdana, Morocco" --vertical-reference "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)"
+python code/evaluate_results.py --data-path data/processed/ras_el_ma_2024-08-08/samples.npz --results-dir results/hls_ras_2024-08-07 --site "Ras El Ma / Ras Kebdana, Morocco" --vertical-reference "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)"
+python code/make_figures.py
+python code/make_figures.py --data-path data/processed/ras_el_ma_2024-08-08/samples.npz --results-dir results/hls_ras_2024-08-07 --scene-dir data/raw/sentinel2/HLS_S30_2024-08-07_RasElMa/T30SWD --product HLS.S30.T30SWD.2024220T105031.v2.0 --figures-dir figures/ras_el_ma --utm-zone 30N --scene-date "7 Aug 2024"
+python code/compare_site_results.py
+```
+
+Training may take substantial time on CPU. The archived fold weights, predictions, metrics, and figures are included, so the current results can be inspected without rerunning model fitting.
+
 ## Citation and licenses
 
 Suggested citation for this release:
@@ -66,4 +119,4 @@ The software is released under the MIT License in `LICENSE`. Author-created stud
 
 ## Versioning
 
-The public release is tagged `v1.0.0`. The data integrity manifest covers files under `data/anza_study/`, excluding the manifest itself. Recompute hashes after any changes to those data files.
+The repository does not currently have a Git tag or DOI. The data integrity manifest covers files under `data/anza_study/`, excluding the manifest itself; it does not cover the separate HLS study folder. Recompute hashes after changing the corresponding data files.

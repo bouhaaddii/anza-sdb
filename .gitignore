@@ -25,6 +25,19 @@ Thumbs.db
 !data/anza_study/
 !data/anza_study/**
 
+# Curated HLS multisite study bundle (input, prepared data, outputs and figures)
+!studies/
+!studies/hls_multisite/
+!studies/hls_multisite/**
+!studies/hls_multisite/data/
+!studies/hls_multisite/data/**
+!studies/hls_multisite/results/
+!studies/hls_multisite/results/**
+!studies/hls_multisite/figures/
+!studies/hls_multisite/figures/**
+!studies/hls_multisite/code/
+!studies/hls_multisite/code/**
+
 /SDB_Resultats_Corriges/
 /SDB_Resultats_Figures/
 /SDB_Cartes_Anza/

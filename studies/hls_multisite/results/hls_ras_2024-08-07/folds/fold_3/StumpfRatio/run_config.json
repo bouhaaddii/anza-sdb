@@ -1,0 +1,28 @@
+{
+  "formula": "z = intercept + slope * ln(1000*B02)/ln(1000*B03)",
+  "intercept": -5.552530288696289,
+  "slope": -0.10630729794502258,
+  "calibration": "training zone only",
+  "train_n": 1113,
+  "validation_n": 1189,
+  "test_n": 1515,
+  "fold": 3,
+  "model": "StumpfRatio",
+  "seed": 20261108,
+  "metrics": {
+    "model": "StumpfRatio",
+    "fold": 3,
+    "n": 1515,
+    "rmse": 2.1401584148406982,
+    "mae": 1.8170279264450073,
+    "bias": -0.16586624085903168,
+    "r2": -0.019338011741638184,
+    "best_epoch": null,
+    "seconds": 0.068
+  },
+  "site": "Ras El Ma / Ras Kebdana, Morocco",
+  "label_unit": "m",
+  "vertical_reference": "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)",
+  "scope": "One observation per 30 m HLS pixel; spatial calibration and testing use distinct buffered alongshore zones. Scores are site-specific and do not establish cross-site transfer or absolute-depth agreement between different port datums.",
+  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+}

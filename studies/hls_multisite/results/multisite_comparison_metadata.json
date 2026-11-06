@@ -1,0 +1,14 @@
+{
+  "scope": "Independent spatial holdout evaluation within each study site; these are not cross-site transfer scores.",
+  "caution": "The sites use separate local port hydrographic zeros. RMSE and MAE describe errors against each site's own labels. Do not interpret differences as absolute vertical agreement or pooled-depth performance. Ras HLS imagery is from one day before its survey.",
+  "sites": [
+    {
+      "name": "Anza / Agadir (2022)",
+      "vertical_reference": "Port of Agadir hydrographic zero (user-reported)"
+    },
+    {
+      "name": "Ras El Ma / Ras Kebdana (2024)",
+      "vertical_reference": "Port of Ras Kebdana hydrographic zero (survey-plan cartouche)"
+    }
+  ]
+}

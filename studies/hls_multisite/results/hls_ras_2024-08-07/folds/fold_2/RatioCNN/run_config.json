@@ -1,0 +1,42 @@
+{
+  "model": "RatioCNN",
+  "fold": 2,
+  "seed": 20261107,
+  "train_zone": 0,
+  "validation_zone": 2,
+  "test_zone": 1,
+  "counts": {
+    "train": 1189,
+    "validation": 1515,
+    "test": 1113
+  },
+  "input_channels": [
+    "B02",
+    "B03",
+    "B04",
+    "B08"
+  ],
+  "normalization_mean": [
+    0.010968957096338272,
+    0.016509316861629486,
+    0.0016861642943695188,
+    -0.0001275966060347855
+  ],
+  "normalization_std": [
+    0.009796957485377789,
+    0.015036722645163536,
+    0.019590038806200027,
+    0.021326040849089622
+  ],
+  "max_epochs": 80,
+  "epochs_run": 80,
+  "best_epoch": 80,
+  "runtime_seconds": 31.682,
+  "parameter_count": 104641,
+  "model_definition": "code/models.py",
+  "site": "Ras El Ma / Ras Kebdana, Morocco",
+  "label_unit": "m",
+  "vertical_reference": "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)",
+  "important_scope": "One observation per 30 m HLS pixel; spatial calibration and testing use distinct buffered alongshore zones. Scores are site-specific and do not establish cross-site transfer or absolute-depth agreement between different port datums.",
+  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+}

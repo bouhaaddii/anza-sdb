@@ -1,0 +1,42 @@
+{
+  "model": "CNN",
+  "fold": 1,
+  "seed": 20261106,
+  "train_zone": 2,
+  "validation_zone": 1,
+  "test_zone": 0,
+  "counts": {
+    "train": 481,
+    "validation": 321,
+    "test": 571
+  },
+  "input_channels": [
+    "B02",
+    "B03",
+    "B04",
+    "B08"
+  ],
+  "normalization_mean": [
+    0.01752880960702896,
+    0.021223299205303192,
+    0.0029513768386095762,
+    -0.0021750186569988728
+  ],
+  "normalization_std": [
+    0.005982534494251013,
+    0.01099892146885395,
+    0.0040107364766299725,
+    0.0028727420140057802
+  ],
+  "max_epochs": 80,
+  "epochs_run": 80,
+  "best_epoch": 80,
+  "runtime_seconds": 21.692,
+  "parameter_count": 104577,
+  "model_definition": "code/models.py",
+  "important_scope": "One observation per 30 m HLS pixel; spatial calibration and testing use distinct buffered alongshore zones. Scores are site-specific and do not establish cross-site transfer or absolute-depth agreement between different port datums.",
+  "site": "Anza, Agadir, Morocco",
+  "label_unit": "m",
+  "vertical_reference": "Local hydrographic zero of the Port of Agadir (user-reported)",
+  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+}

@@ -1,0 +1,42 @@
+{
+  "model": "RatioCNN",
+  "fold": 3,
+  "seed": 20261108,
+  "train_zone": 1,
+  "validation_zone": 0,
+  "test_zone": 2,
+  "counts": {
+    "train": 321,
+    "validation": 571,
+    "test": 481
+  },
+  "input_channels": [
+    "B02",
+    "B03",
+    "B04",
+    "B08"
+  ],
+  "normalization_mean": [
+    0.017314637079834938,
+    0.02074417471885681,
+    0.003129183314740658,
+    -0.0017143378499895334
+  ],
+  "normalization_std": [
+    0.004759309347718954,
+    0.009393848478794098,
+    0.0032161681447178125,
+    0.002447913633659482
+  ],
+  "max_epochs": 80,
+  "epochs_run": 80,
+  "best_epoch": 78,
+  "runtime_seconds": 21.138,
+  "parameter_count": 104641,
+  "model_definition": "code/models.py",
+  "important_scope": "One observation per 30 m HLS pixel; spatial calibration and testing use distinct buffered alongshore zones. Scores are site-specific and do not establish cross-site transfer or absolute-depth agreement between different port datums.",
+  "site": "Anza, Agadir, Morocco",
+  "label_unit": "m",
+  "vertical_reference": "Local hydrographic zero of the Port of Agadir (user-reported)",
+  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+}

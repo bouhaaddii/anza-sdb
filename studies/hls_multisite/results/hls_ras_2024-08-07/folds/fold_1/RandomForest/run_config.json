@@ -1,0 +1,29 @@
+{
+  "features": "centre B02/B03/B04/B08, central 3x3 means, 9x9 standard deviations, log(B02/B03)",
+  "n_estimators": 300,
+  "max_features": 0.75,
+  "min_samples_leaf": 2,
+  "random_state": 20261106,
+  "train_n": 1515,
+  "validation_n": 1113,
+  "test_n": 1189,
+  "fold": 1,
+  "model": "RandomForest",
+  "seed": 20261106,
+  "metrics": {
+    "model": "RandomForest",
+    "fold": 1,
+    "n": 1189,
+    "rmse": 1.0378337547082308,
+    "mae": 0.8986952631743815,
+    "bias": 0.8492822126684464,
+    "r2": 0.304109085546436,
+    "best_epoch": null,
+    "seconds": 1.876
+  },
+  "site": "Ras El Ma / Ras Kebdana, Morocco",
+  "label_unit": "m",
+  "vertical_reference": "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)",
+  "scope": "One observation per 30 m HLS pixel; spatial calibration and testing use distinct buffered alongshore zones. Scores are site-specific and do not establish cross-site transfer or absolute-depth agreement between different port datums.",
+  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+}

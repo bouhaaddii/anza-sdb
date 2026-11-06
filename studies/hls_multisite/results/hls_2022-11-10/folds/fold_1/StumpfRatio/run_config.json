@@ -1,0 +1,28 @@
+{
+  "formula": "z = intercept + slope * ln(1000*B02)/ln(1000*B03)",
+  "intercept": 68.94129180908203,
+  "slope": -84.58966064453125,
+  "calibration": "training zone only",
+  "train_n": 481,
+  "validation_n": 321,
+  "test_n": 571,
+  "fold": 1,
+  "model": "StumpfRatio",
+  "seed": 20261106,
+  "metrics": {
+    "model": "StumpfRatio",
+    "fold": 1,
+    "n": 571,
+    "rmse": 3.192138433456421,
+    "mae": 2.89898943901062,
+    "bias": 2.5911991596221924,
+    "r2": 0.46044814586639404,
+    "best_epoch": null,
+    "seconds": 0.026
+  },
+  "scope": "One observation per 30 m HLS pixel; spatial calibration and testing use distinct buffered alongshore zones. Scores are site-specific and do not establish cross-site transfer or absolute-depth agreement between different port datums.",
+  "site": "Anza, Agadir, Morocco",
+  "label_unit": "m",
+  "vertical_reference": "Local hydrographic zero of the Port of Agadir (user-reported)",
+  "measurement_note": "Errors are against the site's aggregated survey z values. The site-local vertical reference is not tied to the other study site's port datum."
+}
