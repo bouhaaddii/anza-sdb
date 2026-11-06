@@ -13,7 +13,6 @@ import numpy as np
 import pandas as pd
 import rasterio
 from matplotlib.colors import TwoSlopeNorm
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 from rasterio.windows import Window
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -135,59 +134,6 @@ def figure_inputs() -> None:
         ax.set_aspect("equal", adjustable="box")
         ax.grid(alpha=.12)
     save(fig, "Figure_1_study_area_and_inputs")
-
-
-def rounded(ax, xy, wh, text, face, edge, fontsize=8.5, weight="normal"):
-    x, y = xy
-    w, h = wh
-    box = FancyBboxPatch(
-        (x, y), w, h, boxstyle="round,pad=0.012,rounding_size=.02",
-        facecolor=face, edgecolor=edge, linewidth=1.1,
-    )
-    ax.add_patch(box)
-    ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
-            fontsize=fontsize, weight=weight, color=PALETTE["ink"], wrap=True)
-
-
-def arrow(ax, start, end, color):
-    ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=11,
-                                color=color, linewidth=1.2))
-
-
-def figure_architecture() -> None:
-    fig, ax = plt.subplots(figsize=(12.6, 6.0), constrained_layout=True)
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    ax.axis("off")
-    ax.text(.5, .97, "Model families and common HLS inputs", ha="center",
-            va="top", fontsize=14, weight="bold", color=PALETTE["navy"])
-    rounded(ax, (.04, .72), (.22, .16),
-            "9 × 9 × 4 HLS patch\nB02 · B03 · B04 · B08\n30 m surface reflectance",
-            "#E7F1FF", "#8AB4FF", weight="bold")
-    rounded(ax, (.36, .72), (.24, .16),
-            "Shared convolutional encoder\n32 → 64 → 128 filters\n2 × 2 × 128 features",
-            "#E4F6F3", "#78C9BD", weight="bold")
-    arrow(ax, (.26, .80), (.36, .80), PALETTE["slate"])
-    xs = [.025, .22, .415, .61, .805]
-    names = ["CNN", "Ratio CNN", "CNN–BiLSTM", "Dense CNN", "Depth-bin CNN"]
-    desc = [
-        "Global pooling\n→ scalar z estimate",
-        "+ log(B02/B03)\n→ scalar z estimate",
-        "Four spatial tokens\n→ BiLSTM → z",
-        "Decoder\n→ 9 × 9 depth field",
-        "Depth regression\n+ three z bands",
-    ]
-    colors = [COLORS[m] for m in NEURAL_MODELS]
-    for i, (x, name, detail, color) in enumerate(zip(xs, names, desc, colors)):
-        rounded(ax, (x, .39), (.17, .20), f"{name}\n\n{detail}", "#F8FAFC", color, fontsize=8.1)
-        arrow(ax, (.48, .72), (x + .085, .59), color)
-        ax.text(x + .085, .335, "Site-local survey z\n(m) target", ha="center", va="top",
-                fontsize=7.6, color=PALETTE["slate"])
-    rounded(ax, (.14, .075), (.72, .15),
-            "Spatial evaluation: three buffered alongshore zones · one label per 30 m pixel\n"
-            "Baselines: Stumpf log-ratio regression and random forest · held-out pixels are never used for fitting",
-            "#F1F5F9", "#C6D2DE", fontsize=9)
-    save(fig, "Figure_2_model_architectures")
 
 
 def figure_folds() -> None:
@@ -412,7 +358,6 @@ def main() -> None:
     FIG.mkdir(parents=True, exist_ok=True)
     style()
     figure_inputs()
-    figure_architecture()
     figure_folds()
     figure_metrics()
     figure_scatter()
