@@ -28,6 +28,7 @@ PRETTY={"CNN":"CNN","RatioCNN":"RatioCNN","CNN_BiLSTM":"CNN–BiLSTM","DenseCNN"
 MODEL_COLORS={"CNN":"#277DA1","RatioCNN":"#43AA8B","CNN_BiLSTM":"#F8961E","DenseCNN":"#845EC2","DepthBinCNN":"#D45087","StumpfRatio":"#64748B","RandomForest":"#90BE6D"}
 ZONE_COLORS={0:"#2864A5",1:"#F2A541",2:"#369A78"}
 MAP_DOT_SIZE=1.8  # Match the small 30 m cell markers in Supplementary Figures S1–S2.
+SOUNDING_SUPPORT_DOT_SIZE=0.6  # Smaller symbols for dense sounding counts in Figure 1e–f.
 
 def style():
  plt.rcParams.update({"font.family":"DejaVu Sans","font.size":8.2,"axes.titlesize":8.8,"axes.labelsize":7.8,"axes.spines.top":False,"axes.spines.right":False,"axes.edgecolor":"#B8C4D0","axes.linewidth":.7,"axes.labelcolor":"#172033","xtick.color":"#334155","ytick.color":"#334155","text.color":"#172033","figure.facecolor":"white","axes.facecolor":"white","savefig.facecolor":"white","grid.color":"#DCE4EC","grid.linewidth":.5,"legend.frameon":False})
@@ -217,7 +218,7 @@ def fig01_data_overview():
   cb=fig.colorbar(im,ax=ax[1,c],fraction=.04,pad=.015)
   cb.set_label("Depth below local zero (m)",fontsize=6.5);cb.ax.tick_params(labelsize=5.8)
   sc=ax[2,c].scatter(pack["x_utm"]/1000,pack["y_utm"]/1000,
-                     c=pack["survey_points_per_pixel"],s=MAP_DOT_SIZE,cmap="magma",
+                     c=pack["survey_points_per_pixel"],s=SOUNDING_SUPPORT_DOT_SIZE,cmap="magma",
                      linewidths=0,alpha=.88,rasterized=True)
   ax[2,c].set_title(f"({chr(101+c)}) Sounding support · n={len(pack['y']):,} cells",
                     loc="left",weight="bold")
