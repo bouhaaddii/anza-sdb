@@ -1,6 +1,7 @@
 """Publication-size two-site figures generated from saved HLS samples and OOF results."""
 from __future__ import annotations
 import json
+import sys
 from pathlib import Path
 from contextlib import ExitStack
 import matplotlib
@@ -12,7 +13,7 @@ import rasterio
 from rasterio.windows import Window
 from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm, Normalize
 from matplotlib.cm import ScalarMappable
-from matplotlib.patches import Circle, Polygon
+from matplotlib.patches import Circle, Polygon, Rectangle
 from matplotlib.ticker import MaxNLocator
 import matplotlib.tri as mtri
 import matplotlib.patheffects as path_effects
@@ -36,15 +37,15 @@ def save(fig,name):
  fig.savefig(OUT/f"{name}.png",dpi=450,bbox_inches="tight",facecolor="white")
  fig.savefig(OUT/f"{name}.pdf",bbox_inches="tight",facecolor="white")
  plt.close(fig)
-def panel_tag(ax,label,fontsize=8):
+def panel_tag(ax,label,fontsize=8,xy=(.025,.965)):
  """Add a small panel key; explanatory wording belongs in the article caption."""
  if hasattr(ax,"text2D"):
-  ax.text2D(.025,.965,f"({label})",transform=ax.transAxes,ha="left",va="top",
+  ax.text2D(xy[0],xy[1],f"({label})",transform=ax.transAxes,ha="left",va="top",
             fontsize=fontsize,weight="bold",color="#172033",
             bbox={"facecolor":"white","edgecolor":"#D5DEE8","alpha":.95,
                   "boxstyle":"round,pad=.18"},zorder=50)
  else:
-  ax.text(.025,.965,f"({label})",transform=ax.transAxes,ha="left",va="top",
+  ax.text(xy[0],xy[1],f"({label})",transform=ax.transAxes,ha="left",va="top",
           fontsize=fontsize,weight="bold",color="#172033",
           bbox={"facecolor":"white","edgecolor":"#D5DEE8","alpha":.95,
                 "boxstyle":"round,pad=.18"},zorder=50)
@@ -147,38 +148,48 @@ def set_3d_panes(ax):
  for pane in (ax.xaxis.pane,ax.yaxis.pane,ax.zaxis.pane):
   pane.set_facecolor((.96,.98,.99,.72));pane.set_edgecolor("#B8C4D0")
  ax.grid(True,alpha=.16)
-def method_band_cube(ax,patch):
- """Plot the actual four-band 9 x 9 reflectance patch as a stacked raster cube."""
- xx,yy=np.meshgrid(np.arange(9),np.arange(9))
- palettes=("Blues","Greens","Reds","Purples")
- for k,palette in enumerate(palettes):
-  values=np.asarray(patch[:,:,k],float)
-  lo,hi=np.nanpercentile(values,[2,98]); hi=max(float(hi),float(lo)+1e-6)
-  colors=plt.get_cmap(palette)(np.clip((values-lo)/(hi-lo),0,1))
-  ax.plot_surface(xx,yy,np.full_like(xx,float(k)),facecolors=colors,
-                  edgecolor="#F8FAFC",linewidth=.28,shade=False,antialiased=False)
- ax.set(xlim=(0,8),ylim=(0,8),zlim=(-.25,3.35),xlabel="Col.",ylabel="Row")
- ax.set_xticks([0,4,8]);ax.set_yticks([0,4,8]);ax.set_zticks([0,1,2,3],["B02","B03","B04","B08"])
- ax.tick_params(labelsize=4.6,pad=0);ax.view_init(elev=26,azim=-58);set_3d_panes(ax)
-def method_depth_patch(ax,pack,idx,prediction,model):
- """Show the true 9 x 9 local labels and the model's one central held-out output."""
+def method_band_map(ax, values, band, norm):
+ """Display one measured 9 x 9 HLS reflectance layer on the shared scale."""
+ edges=np.arange(10,dtype=float)-.5
+ image=ax.pcolormesh(edges,edges,np.asarray(values,float),cmap=plt.get_cmap("cividis"),
+                     norm=norm,shading="flat",edgecolors="#FFFFFF",linewidth=.22)
+ ax.add_patch(Rectangle((3.5,3.5),1,1,fill=False,edgecolor="#172033",linewidth=.8,zorder=5))
+ ax.set(xlim=(-.5,8.5),ylim=(8.5,-.5),aspect="equal")
+ ax.set_xticks([]);ax.set_yticks([])
+ ax.set_title(band,fontsize=7.0,weight="bold",pad=1.1)
+ ax.text(.5,-.055,f"mean {np.nanmean(values):.3f}",transform=ax.transAxes,
+         ha="center",va="top",fontsize=5.7,color="#334155")
+ return image
+
+def method_depth_pixels(ax,pack,idx,prediction,model):
+ """Map the measured 9 x 9 depth labels and mark the held-out centre estimate."""
  z=-np.asarray(pack["target_patches"][idx,:,:,0],float)
  weights=np.asarray(pack["target_weights"][idx,:,:,0],float)
  z=np.where(weights>0,z,np.nan)
- xx,yy=np.meshgrid(np.arange(9),np.arange(9))
- vmin=max(0,float(np.nanmin(z))-.5);vmax=max(float(np.nanmax(z)),float(-prediction))+.5
- colors=DEPTH_CMAP(Normalize(vmin,vmax)(np.nan_to_num(z,nan=vmin)))
- ax.plot_surface(xx,yy,z,facecolors=colors,edgecolor="#F8FAFC",linewidth=.26,
-                 antialiased=True,shade=False)
  observed=float(-pack["y"][idx,0]);predicted=float(-prediction)
- ax.plot([4,4],[4,4],[min(observed,predicted),max(observed,predicted)],
-         color="#D95F02",linewidth=1.25,zorder=10)
- ax.scatter([4],[4],[observed],s=16,marker="o",c="#17324D",edgecolors="white",linewidths=.35,zorder=11)
- ax.scatter([4],[4],[predicted],s=30,marker="*",c="#F28E2B",edgecolors="#17324D",linewidths=.35,zorder=12)
- ax.set(xlim=(0,8),ylim=(0,8),zlim=(vmin,vmax),xlabel="Col.",ylabel="Row",
-        zlabel="Depth")
- ax.set_xticks([0,4,8]);ax.set_yticks([0,4,8]);ax.tick_params(labelsize=4.7,pad=0)
- ax.view_init(elev=26,azim=-58);set_3d_panes(ax)
+ vals=np.r_[z[np.isfinite(z)],observed,predicted]
+ vmin=max(0.0,float(np.nanmin(vals)));vmax=float(np.nanmax(vals))
+ if vmax<=vmin:vmax=vmin+0.1
+ edges=np.arange(10,dtype=float)-.5
+ image=ax.pcolormesh(edges,edges,np.ma.masked_invalid(z),cmap=DEPTH_CMAP,
+                     vmin=vmin,vmax=vmax,shading="flat",edgecolors="#FFFFFF",linewidth=.28)
+ ax.add_patch(Rectangle((3.5,3.5),1,1,fill=False,edgecolor="#172033",linewidth=.9,zorder=5))
+ # Both symbols refer to the same 30 m centre cell. A small within-cell offset
+ # makes the observed label and held-out estimate distinguishable at print size.
+ ax.scatter([3.73],[4],s=48,marker="o",c="#17324D",edgecolors="white",
+            linewidths=.8,zorder=8)
+ ax.scatter([4.27],[4],s=100,marker="*",c="#F28E2B",edgecolors="#17324D",
+            linewidths=.65,zorder=9)
+ short_model=PRETTY.get(model,model)
+ ax.set_title(f"Survey {observed:.2f} m\n{short_model} {predicted:.2f} m",
+              fontsize=5.9,pad=2.2)
+ ax.set(xlim=(-.5,8.5),ylim=(8.5,-.5),aspect="equal",xlabel="Pixel column",ylabel="Pixel row")
+ ax.xaxis.label.set_size(6.4);ax.yaxis.label.set_size(6.4)
+ ax.set_xticks([0,4,8]);ax.set_yticks([0,4,8]);ax.tick_params(labelsize=4.8,pad=1)
+ cb=plt.gcf().colorbar(image,ax=ax,fraction=.045,pad=.035,aspect=24)
+ cb.set_label("Depth below local zero (m)",fontsize=5.4,labelpad=1)
+ cb.ax.tick_params(labelsize=5.0,length=1.5,pad=1)
+ return image
 def results_surface_3d(ax,x,y,elevation,site,vmax):
  """Map the local XYZ coordinates with a depth-coloured surface and floor contours."""
  x=np.asarray(x,float);y=np.asarray(y,float);elevation=np.asarray(elevation,float)
@@ -269,10 +280,13 @@ def fig01_data_overview():
   scalebar(ax[0,c],extent)
  save(fig,"Figure_01_data_overview")
 def fig02_cartographic_method():
- """Show source patch, measured HLS cube, and the held-out centre estimate."""
- fig=plt.figure(figsize=(7.25,5.85),facecolor="white")
- gs=fig.add_gridspec(2,3,left=.035,right=.985,top=.985,bottom=.025,
-                    width_ratios=[1.22,1.16,1.34],wspace=.13,hspace=.11)
+ """Locate the source pixels, compare all measured HLS bands, and show each held-out output."""
+ fig=plt.figure(figsize=(6.2,4.1),facecolor="white")
+ gs=fig.add_gridspec(2,3,left=.035,right=.985,top=.97,bottom=.07,
+                     width_ratios=[1.08,2.35,1.30],wspace=.20,hspace=.10)
+ inner=gs[:,1].subgridspec(3,4,height_ratios=[1,1,.075],hspace=.22,wspace=.13)
+ reflectance_norm=Normalize(vmin=-.01,vmax=.03)
+ reflectance_images=[]
  for r,site in enumerate(SITES):
   pack,rgb,extent,_=context(site,pad=25)
   pred=pd.read_csv(site["results"]/"out_of_fold_predictions.csv")
@@ -280,23 +294,45 @@ def fig02_cartographic_method():
   model=str(errors.idxmin());candidates=np.flatnonzero(pack["zones"]==1)
   if not len(candidates):candidates=np.arange(len(pack["y"]))
   mid=np.array([np.median(pack["x_utm"][candidates]),np.median(pack["y_utm"][candidates])])
-  idx=int(candidates[np.argmin(np.sum((np.column_stack([pack["x_utm"][candidates],
-       pack["y_utm"][candidates]])-mid)**2,axis=1))])
+  xy=np.column_stack([pack["x_utm"][candidates],pack["y_utm"][candidates]])
+  idx=int(candidates[np.argmin(np.sum((xy-mid)**2,axis=1))])
   pid=str(pack["pixel_ids"][idx]);row=pred[(pred.model==model)&(pred.pixel_id.astype(str)==pid)]
   if row.empty:
    row=pred[pred.model==model].iloc[[int(np.argmin((pred.x_utm-pack["x_utm"][idx])**2+
                                                     (pred.y_utm-pack["y_utm"][idx])**2))]]
   estimate=float(row.iloc[0].prediction_m)
+
+  # Site map: all retained cells are shown; the outlined square is the 9 x 9 input window.
   ax=fig.add_subplot(gs[r,0]);ax.imshow(rgb,extent=extent,origin="upper",interpolation="nearest")
-  ax.scatter(pack["x_utm"]/1000,pack["y_utm"]/1000,s=1.1,c="white",alpha=.58,
+  ax.scatter(pack["x_utm"]/1000,pack["y_utm"]/1000,s=.65,c="white",alpha=.62,
              linewidths=0,rasterized=True)
   cx=pack["x_utm"][idx]/1000;cy=pack["y_utm"][idx]/1000;half=.135
-  ax.add_patch(plt.Rectangle((cx-half,cy-half),2*half,2*half,fill=False,
-                 edgecolor="#FFD166",linewidth=1.1,zorder=10))
-  ax.scatter([cx],[cy],marker="+",s=18,c="#17324D",linewidths=.9,zorder=11)
-  map_axes(ax,site,extent);north(ax);scalebar(ax,extent);panel_tag(ax,chr(97+r*3))
-  cube=fig.add_subplot(gs[r,1],projection="3d");method_band_cube(cube,pack["X"][idx]);panel_tag(cube,chr(98+r*3))
-  out=fig.add_subplot(gs[r,2],projection="3d");method_depth_patch(out,pack,idx,estimate,model);panel_tag(out,chr(99+r*3))
+  ax.add_patch(Rectangle((cx-half,cy-half),2*half,2*half,fill=False,
+                         edgecolor="#FFD166",linewidth=1.1,zorder=10))
+  ax.scatter([cx],[cy],marker="+",s=20,c="#17324D",linewidths=1.0,zorder=11)
+  compact_map_axes(ax,site,extent);north(ax);scalebar(ax,extent)
+  panel_tag(ax,"a" if r==0 else "d",fontsize=7.8)
+  ax.text(.96,.04,site["name"],transform=ax.transAxes,ha="right",va="bottom",fontsize=5.7,
+          color="#172033",bbox={"facecolor":"white","edgecolor":"none","alpha":.91,"pad":1.6})
+
+  # Four measured reflectance rasters per site share one numeric colour scale.
+  bandax=None
+  for b,band in enumerate(("B02","B03","B04","B08")):
+   bandax=fig.add_subplot(inner[r,b])
+   reflectance_images.append(method_band_map(bandax,pack["X"][idx,:,:,b],band,reflectance_norm))
+   if b==0:
+    bandax.text(-.15,.5,site["name"],transform=bandax.transAxes,rotation=90,ha="right",va="center",
+                fontsize=6.0,weight="bold",color="#17324D")
+    if r==0:panel_tag(bandax,"b",fontsize=7.2,xy=(.015,1.26))
+  # Exact 30 m cell labels are shown top-down; star and circle share the centre cell.
+  out=fig.add_subplot(gs[r,2]);method_depth_pixels(out,pack,idx,estimate,model)
+  panel_tag(out,"c" if r==0 else "e",fontsize=7.8,xy=(.015,1.19))
+
+ # Shared scale makes the Anza and Ras El Ma reflectance values directly comparable.
+ cax=fig.add_subplot(inner[2,:])
+ cb=fig.colorbar(reflectance_images[-1],cax=cax,orientation="horizontal")
+ cb.set_label("HLS surface reflectance (unitless)",fontsize=5.8,labelpad=1)
+ cb.set_ticks([-.01,0,.01,.02,.03]);cb.ax.tick_params(labelsize=5.2,length=1.5,pad=1)
  save(fig,"Figure_02_cartographic_method")
 def fig04_spatial_validation():
  fig=plt.figure(figsize=(6.8,5.4),facecolor="white")
@@ -431,5 +467,8 @@ def fig_s1_disagreement():
 def main():
  style(); fig01_data_overview(); fig02_cartographic_method(); fig04_spatial_validation(); fig05_errors(); fig05_results_maps(); fig06_results_3d(); fig_s1_disagreement(); fig_s2_residual_maps()
  print("Saved seven main cartographic/results figures and two supplementary maps to",OUT)
-if __name__=="__main__": main()
+if __name__=="__main__":
+ if len(sys.argv)>1 and sys.argv[1]=="--figure2-only":
+  style();fig02_cartographic_method()
+ else: main()
 

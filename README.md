@@ -15,7 +15,7 @@ The Anza source survey files are `Anza_Agadir_bathy_points.txt`, `Anza_Agadir_to
 
 ## Data details
 
-- Both image inputs are HLS S30 at 30 m. The included bands are B02 (blue), B03 (green), B04 (red), B08 (near infrared), and Fmask (quality flags).
+- Both image inputs are HLS S30 at 30 m. The included bands are B02 (blue), B03 (green), B04 (red), B08 (near infrared), and Fmask (quality flags). The Anza granule is `HLS.S30.T29RMP.2022314T112209.v2.0` (10 November 2022); the Ras El Ma granule is `HLS.S30.T30SWD.2024220T105031.v2.0` (7 August 2024).
 - HLS reflectance is stored as scaled integers and converted with a factor of 0.0001. The scripts exclude fill and cloud, cloud-adjacency, shadow, and snow/ice flags.
 - Survey elevations are in metres relative to each site's local hydrographic zero: the Port of Agadir for Anza and the Port of Ras Kebdana for Ras El Ma. No vertical tie between the two local zeros is applied, so elevations are not pooled as a shared datum.
 - Ras El Ma imagery was acquired on 7 August 2024, one day before its 8 August survey. Anza imagery and survey are dated 10 November 2022.
@@ -36,7 +36,7 @@ Three buffered alongshore zones rotate through training, validation, and test ro
 - `code/train_models.py`: trains the selected models across spatial folds.
 - `code/evaluate_results.py`: assembles out-of-fold predictions and per-site evaluation tables.
 - `code/compare_site_results.py`: creates the two-site comparison table and relative-skill figure without pooling the local elevations.
-- `code/make_advanced_figures.py`: creates Figures 1–7 and Supplementary Figures S1–S2 from the saved samples and predictions. Site-specific 3D Figures 6 and 7 show survey and held-out XYZ surfaces separately at larger scale, with numeric UTM X/Y coordinates, local survey elevation Z in metres, and supported isobath projections. Their vertical dimension uses a fixed 40× exaggeration; amber marks estimates above the local zero.
+- `code/make_advanced_figures.py`: creates Figures 1–7 and Supplementary Figures S1–S2 from the saved samples and predictions. Site-specific 3D Figures 6 and 7 show survey and held-out XYZ surfaces separately at larger scale, with numeric UTM X/Y coordinates, local survey elevation Z in metres, and supported isobath projections. Their vertical dimension uses a fixed 40× exaggeration; amber marks estimates above the local zero. Figure 2 presents both sites’ measured 9 × 9 B02/B03/B04/B08 patches in one common-scale reflectance matrix, alongside site maps and centre-cell survey/held-out depth values.
 - `data/raw/`: source bathymetry and HLS imagery used by the study.
 - `data/processed/`: site-specific sample arrays and processing summaries.
 - `results/`: trained model outputs, out-of-fold predictions, and evaluation tables, kept in separate site folders.
