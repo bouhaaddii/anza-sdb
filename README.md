@@ -1,6 +1,6 @@
-# Mapping the Hidden Coast
+# Spatially Blocked Comparison of CNN Variants and Baseline Models for Satellite-Derived Bathymetry at Two Moroccan Coasts
 
-## Two-site satellite-derived bathymetry at Anza and Ras El Ma, Morocco
+## Study code, inputs, and outputs for Anza and Ras El Ma, Morocco
 
 This repository contains the analysis code, source inputs, prepared samples, saved spatial-holdout outputs, and figures for a study of shallow-water bathymetry at two Moroccan coasts. It compares five convolutional neural network variants designed by the first author with a Stumpf-style blue–green log-ratio baseline and a random-forest baseline using NASA/USGS Harmonized Landsat and Sentinel-2 (HLS) S30 imagery.
 
