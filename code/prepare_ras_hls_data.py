@@ -186,9 +186,9 @@ def make_dataset() -> dict:
         "site": "Ras El Ma / Ras Kebdana, Morocco",
         "product_id": PRODUCT,
         "imagery_acquisition_date": "2024-08-07",
-        "survey_date": "2024-08-08 (confirmed by the user)",
-        "survey_z_unit": "m (confirmed by the user)",
-        "vertical_reference": "Local hydrographic zero of the Port of Ras Kebdana (stated in the survey-plan cartouche)",
+        "survey_date": "2024-08-08",
+        "survey_z_unit": "m",
+        "vertical_reference": "Local hydrographic zero of the Port of Ras Kebdana",
         "horizontal_crs_used": SURVEY_CRS,
         "horizontal_crs_basis": "The plan states Lambert Zone 1, Clarke 1880, Lambert Conic; the GPKG metadata identifies EPSG:26191 (Merchich / Nord Maroc). The DXF-derived points align spatially with the HLS T30SWD footprint after this transformation.",
         "datum_translation_parameters_in_plan_m": {"dx": -31, "dy": -146, "dz": -47},
@@ -242,3 +242,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

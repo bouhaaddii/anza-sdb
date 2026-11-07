@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_RESULTS = ROOT / "results" / "hls_2022-11-10"
-DEFAULT_DATA = ROOT / "data" / "processed" / "samples.npz"
+DEFAULT_RESULTS = ROOT / "results" / "anza_agadir_2022-11-10"
+DEFAULT_DATA = ROOT / "data" / "processed" / "anza_agadir_2022-11-10" / "samples.npz"
 
 
 def score(frame: pd.DataFrame) -> dict:
@@ -56,7 +56,7 @@ def main() -> None:
     parser.add_argument("--data-path", type=Path, default=DEFAULT_DATA)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS)
     parser.add_argument("--site", default="Anza, Agadir, Morocco")
-    parser.add_argument("--vertical-reference", default="Hydrographic zero of the Port of Agadir (confirmed by the survey-data owner)")
+    parser.add_argument("--vertical-reference", default="Hydrographic zero of the Port of Agadir")
     args = parser.parse_args()
     results_dir = args.results_dir
     folds_dir = results_dir / "folds"
@@ -126,3 +126,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

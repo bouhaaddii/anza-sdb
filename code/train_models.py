@@ -20,8 +20,8 @@ from sklearn.linear_model import LinearRegression
 from models import BUILDERS, masked_patch_mse
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DATA = ROOT / "data" / "processed" / "samples.npz"
-DEFAULT_OUT = ROOT / "results" / "hls_2022-11-10" / "folds"
+DEFAULT_DATA = ROOT / "data" / "processed" / "anza_agadir_2022-11-10" / "samples.npz"
+DEFAULT_OUT = ROOT / "results" / "anza_agadir_2022-11-10" / "folds"
 NEURAL_MODELS = list(BUILDERS)
 MODELS = NEURAL_MODELS + ["StumpfRatio", "RandomForest"]
 
@@ -245,7 +245,7 @@ def main() -> None:
     parser.add_argument("--data-path", type=Path, default=DEFAULT_DATA)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--site", default="Anza, Agadir, Morocco")
-    parser.add_argument("--vertical-reference", default="Hydrographic zero of the Port of Agadir (confirmed by the survey-data owner)")
+    parser.add_argument("--vertical-reference", default="Hydrographic zero of the Port of Agadir")
     args = parser.parse_args()
     pack = np.load(args.data_path, allow_pickle=False)
     selected = MODELS if "all" in args.models else args.models
@@ -276,3 +276,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

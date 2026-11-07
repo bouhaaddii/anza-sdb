@@ -1,0 +1,18 @@
+{
+  "source": "NASA/USGS Harmonized Landsat and Sentinel-2 (HLS) S30 Version 2.0",
+  "collection_doi": "https://doi.org/10.5067/HLS/HLSS30.002",
+  "resolution_m": 30,
+  "reflectance_scale_factor": 0.0001,
+  "granule_used_by_study": {
+    "id": "HLS.S30.T30SWD.2024220T105031.v2.0",
+    "site": "Ras El Ma / Ras Kebdana",
+    "acquisition_date": "2024-08-07",
+    "survey_date": "2024-08-08",
+    "tile": "T30SWD",
+    "relative_directory": "T30SWD/",
+    "analysis_layers": ["B02", "B03", "B04", "B08", "Fmask"],
+    "granule_cloud_cover_percent": 3
+  },
+  "quality_note": "The catalogue cloud-cover value is granule-wide. The processing script applies the included Fmask layer and reflectance-fill checks to study pixels.",
+  "other_intersecting_granules": "A second neighbouring tile was returned by the catalogue search but is not used by the study processing script and is not included in this release."
+}

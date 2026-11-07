@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 SITES = [
-    {"name":"Anza / Agadir (2022)","results":ROOT/"results"/"hls_2022-11-10","vertical_reference":"Port of Agadir hydrographic zero (confirmed by the survey-data owner)","color":"#2864A5"},
-    {"name":"Ras El Ma / Ras Kebdana (2024)","results":ROOT/"results"/"hls_ras_2024-08-07","vertical_reference":"Port of Ras Kebdana hydrographic zero (survey-plan cartouche)","color":"#D97742"},
+    {"name":"Anza / Agadir (2022)","results":ROOT/"results"/"anza_agadir_2022-11-10","vertical_reference":"Hydrographic zero of the Port of Agadir","color":"#2864A5"},
+    {"name":"Ras El Ma / Ras Kebdana (2024)","results":ROOT/"results"/"ras_el_ma_2024-08-08","vertical_reference":"Hydrographic zero of the Port of Ras Kebdana","color":"#D97742"},
 ]
 MODELS=["CNN","RatioCNN","CNN_BiLSTM","DenseCNN","DepthBinCNN","StumpfRatio","RandomForest"]
 PRETTY={"CNN":"CNN","RatioCNN":"RatioCNN","CNN_BiLSTM":"CNN–BiLSTM","DenseCNN":"DenseCNN","DepthBinCNN":"DepthBinCNN","StumpfRatio":"Stumpf log-ratio","RandomForest":"Random forest"}
@@ -62,3 +62,4 @@ def main() -> None:
     plt.close(fig)
     print(table[["site","model","n_pixels","rmse_m","mae_m","normalized_rmse_by_label_sd","normalized_mae_by_label_sd"]].to_string(index=False))
 if __name__=="__main__": main()
+

@@ -5,11 +5,11 @@
   "sites": [
     {
       "name": "Anza / Agadir (2022)",
-      "vertical_reference": "Port of Agadir hydrographic zero (confirmed by the survey-data owner)"
+      "vertical_reference": "Hydrographic zero of the Port of Agadir"
     },
     {
       "name": "Ras El Ma / Ras Kebdana (2024)",
-      "vertical_reference": "Port of Ras Kebdana hydrographic zero (survey-plan cartouche)"
+      "vertical_reference": "Hydrographic zero of the Port of Ras Kebdana"
     }
   ]
 }

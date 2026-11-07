@@ -19,8 +19,8 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"figures"/"rse_14p"; OUT.mkdir(parents=True,exist_ok=True)
 DEPTH_CMAP=LinearSegmentedColormap.from_list("coast_depth",["#e8f4f2","#85d1c6","#2f8ea8","#17466c","#10253f"])
 SITES=[
- {"name":"Anza / Agadir","coast":"Atlantic coast","date":"10 Nov 2022","sample":ROOT/"data"/"processed"/"samples.npz","summary":ROOT/"data"/"processed"/"dataset_summary.json","scene":ROOT/"data"/"raw"/"sentinel2"/"HLS_S30_2022-11-10","product":"HLS.S30.T29RMP.2022314T112209.v2.0","results":ROOT/"results"/"hls_2022-11-10","utm":"29N","datum":"Port of Agadir hydrographic zero","color":"#2864A5"},
- {"name":"Ras El Ma / Ras Kebdana","coast":"Mediterranean coast","date":"07 Aug image · 08 Aug survey 2024","sample":ROOT/"data"/"processed"/"ras_el_ma_2024-08-08"/"samples.npz","summary":ROOT/"data"/"processed"/"ras_el_ma_2024-08-08"/"dataset_summary.json","scene":ROOT/"data"/"raw"/"sentinel2"/"HLS_S30_2024-08-07_RasElMa"/"T30SWD","product":"HLS.S30.T30SWD.2024220T105031.v2.0","results":ROOT/"results"/"hls_ras_2024-08-07","utm":"30N","datum":"Port of Ras Kebdana hydrographic zero","color":"#D97742"},
+ {"name":"Anza / Agadir","coast":"Atlantic coast","date":"10 Nov 2022","sample":ROOT/"data"/"processed"/"anza_agadir_2022-11-10"/"samples.npz","summary":ROOT/"data"/"processed"/"anza_agadir_2022-11-10"/"dataset_summary.json","scene":ROOT/"data"/"raw"/"sentinel2"/"HLS_S30_Anza_Agadir_2022-11-10","product":"HLS.S30.T29RMP.2022314T112209.v2.0","results":ROOT/"results"/"anza_agadir_2022-11-10","utm":"29N","datum":"Port of Agadir hydrographic zero","color":"#2864A5"},
+ {"name":"Ras El Ma / Ras Kebdana","coast":"Mediterranean coast","date":"07 Aug image · 08 Aug survey 2024","sample":ROOT/"data"/"processed"/"ras_el_ma_2024-08-08"/"samples.npz","summary":ROOT/"data"/"processed"/"ras_el_ma_2024-08-08"/"dataset_summary.json","scene":ROOT/"data"/"raw"/"sentinel2"/"HLS_S30_2024-08-07_RasElMa"/"T30SWD","product":"HLS.S30.T30SWD.2024220T105031.v2.0","results":ROOT/"results"/"ras_el_ma_2024-08-08","utm":"30N","datum":"Port of Ras Kebdana hydrographic zero","color":"#D97742"},
 ]
 MODELS=["CNN","RatioCNN","CNN_BiLSTM","DenseCNN","DepthBinCNN","StumpfRatio","RandomForest"]
 PRETTY={"CNN":"CNN","RatioCNN":"RatioCNN","CNN_BiLSTM":"CNN–BiLSTM","DenseCNN":"DenseCNN","DepthBinCNN":"DepthBinCNN","StumpfRatio":"Stumpf log-ratio","RandomForest":"Random forest"}
@@ -387,3 +387,4 @@ def main():
  style(); fig01_data_overview(); fig02_cartographic_method(); fig04_spatial_validation(); fig05_errors(); fig05_results_maps(); fig06_results_3d(); fig_s1_disagreement(); fig_s2_residual_maps()
  print("Saved six main cartographic/results figures and two supplementary maps to",OUT)
 if __name__=="__main__": main()
+
