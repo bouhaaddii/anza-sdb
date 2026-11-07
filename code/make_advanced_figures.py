@@ -13,6 +13,7 @@ from rasterio.windows import Window
 from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm, Normalize
 from matplotlib.cm import ScalarMappable
 from matplotlib.patches import Circle, Polygon
+from matplotlib.ticker import MaxNLocator
 import matplotlib.tri as mtri
 import matplotlib.patheffects as path_effects
 ROOT=Path(__file__).resolve().parents[1]
@@ -178,26 +179,64 @@ def method_depth_patch(ax,pack,idx,prediction,model):
         zlabel="Depth")
  ax.set_xticks([0,4,8]);ax.set_yticks([0,4,8]);ax.tick_params(labelsize=4.7,pad=0)
  ax.view_init(elev=26,azim=-58);set_3d_panes(ax)
-def results_surface_3d(ax,x,y,depth,site,vmax):
- """Render supported 30 m cells in a close, orthographic 3D view."""
- x=np.asarray(x,float);y=np.asarray(y,float);depth=np.asarray(depth,float)
- finite=np.isfinite(x)&np.isfinite(y)&np.isfinite(depth)
- x=x[finite];y=y[finite];depth=depth[finite]
+def results_surface_3d(ax,x,y,elevation,site,vmax):
+ """Map the local XYZ coordinates with a depth-coloured surface and floor contours."""
+ x=np.asarray(x,float);y=np.asarray(y,float);elevation=np.asarray(elevation,float)
+ finite=np.isfinite(x)&np.isfinite(y)&np.isfinite(elevation)
+ x=x[finite];y=y[finite];elevation=elevation[finite]
+ depth=-elevation
  tri=supported_triangulation(x,y)
- surf=ax.plot_trisurf(tri,depth,cmap=DEPTH_CMAP,norm=Normalize(0,vmax),
-                      linewidth=0,antialiased=True,shade=True)
+ triangles=tri.get_masked_triangles()
+ if not len(triangles):
+  raise ValueError("No supported 30 m triangles are available for the 3D surface.")
+ # The surface uses true local elevations for Z. A piecewise colormap maps
+ # negative Z to positive-down depth colours and predictions above zero to amber.
+ zmax=float(elevation.max())
+ if zmax>0:
+  transition=vmax/(vmax+zmax)
+  surface_cmap=LinearSegmentedColormap.from_list(
+   "local_elevation_depth",
+   [(0.0,DEPTH_CMAP(1.0)),(transition,DEPTH_CMAP(0.0)),(1.0,"#D7A54A")])
+  surface_norm=Normalize(-vmax,zmax)
+ else:
+  surface_cmap=DEPTH_CMAP.reversed()
+  surface_norm=Normalize(-vmax,0.0)
+ surf=ax.plot_trisurf(tri,elevation,cmap=surface_cmap,norm=surface_norm,
+                      linewidth=.035,antialiased=True,shade=True)
  sx=max(float(np.ptp(x)),.12);sy=max(float(np.ptp(y)),.12)
  padx=max(.035,sx*.045);pady=max(.035,sy*.045)
  xlo=float(x.min()-padx);xhi=float(x.max()+padx)
  ylo=float(y.min()-pady);yhi=float(y.max()+pady)
- ax.set_xlim(xlo,xhi);ax.set_ylim(ylo,yhi);ax.set_zlim(0,vmax*1.04)
- ax.set_xlabel("E (km)",fontsize=6.0,labelpad=0)
- ax.set_ylabel("N (km)",fontsize=6.0,labelpad=0)
+ zlo=min(float(elevation.min())-.5,-vmax*1.12)
+ zhi=max(float(elevation.max())+.5,.5)
+ ax.set_xlim(xlo,xhi);ax.set_ylim(ylo,yhi);ax.set_zlim(zlo,zhi)
+ # Project isobaths onto the plot floor to make depth intervals legible without
+ # interpolating beyond the supported cell-centre neighbourhoods.
+ contour_step=5.0 if vmax>15 else 2.0
+ levels=np.arange(contour_step,np.floor(vmax/contour_step)*contour_step+.01,contour_step)
+ if len(levels):
+  ax.tricontour(tri,depth,levels=levels,zdir="z",offset=zlo,
+                colors="#40566B",linewidths=.48,alpha=.78)
+ ax.set_xlabel("X (km)",fontsize=9.0,labelpad=2)
+ ax.set_ylabel("Y (km)",fontsize=9.0,labelpad=2)
+ # Keep the vertical coordinate explicit without letting the right-hand
+ # 3D-axis label collide with the figure edge or the panel color scale.
  ax.set_zlabel("")
- ax.set_xticks([]);ax.set_yticks([]);ax.set_zticks([])
- ax.tick_params(labelsize=5.0,pad=0)
- ax.view_init(elev=34,azim=-53);ax.set_proj_type("ortho");set_3d_panes(ax)
- ax.set_box_aspect((max(sx,.12),max(sy,.12),max(vmax/1000*45,.12)))
+ ax.text2D(.875,.53,"Z (m)",transform=ax.transAxes,rotation=90,
+           ha="center",va="center",fontsize=9.0,color="#172033")
+ xticks=xlo+np.array([.25,.75])*(xhi-xlo)
+ yticks=ylo+np.array([.25,.75])*(yhi-ylo)
+ ax.set_xticks(xticks);ax.set_yticks(yticks)
+ ax.set_xticklabels([f"{v:.3f}" for v in xticks],fontsize=7.5)
+ ax.set_yticklabels([f"{v:.3f}" for v in yticks],fontsize=7.5)
+ ax.zaxis.set_major_locator(MaxNLocator(nbins=4,steps=[1,2,2.5,5,10]))
+ ax.tick_params(axis="z",labelsize=7.2,pad=1)
+ ax.tick_params(axis="x",pad=1);ax.tick_params(axis="y",pad=1)
+ ax.view_init(elev=31,azim=-54);ax.set_proj_type("ortho");set_3d_panes(ax)
+ # Vertical exaggeration is fixed across both sites and disclosed in the caption.
+ vertical_exaggeration=40.0
+ ax.set_box_aspect((max(xhi-xlo,.12),max(yhi-ylo,.12),
+                    max((zhi-zlo)/1000*vertical_exaggeration,.08)))
  return surf
 def fig01_data_overview():
  fig,ax=plt.subplots(3,2,figsize=(6.8,7.45),constrained_layout=True)
@@ -341,23 +380,29 @@ def fig05_results_maps():
   cb.set_label("Depth below local zero (m)",fontsize=6.4);cb.ax.tick_params(labelsize=5.7,pad=1)
  save(fig,"Figure_05_results_maps")
 def fig06_results_3d():
- """Large orthographic 3D views of survey labels and held-out depth estimates."""
- fig=plt.figure(figsize=(7.15,7.0),facecolor="white")
- gs=fig.add_gridspec(2,3,left=.045,right=.945,top=.985,bottom=.035,
-                    width_ratios=[1,1,.045],wspace=.16,hspace=.06)
- for r,site in enumerate(SITES):
+ """Separate, enlarged XYZ bathymetry views for each site."""
+ for site_index,site in enumerate(SITES):
   data=pd.read_csv(site["results"]/"out_of_fold_predictions.csv")
   rm=data.groupby("model").residual_m.apply(lambda v:float(np.sqrt(np.mean(np.asarray(v,float)**2))))
   model=str(rm.idxmin());d=data[data.model==model]
   x=d.x_utm.to_numpy(float)/1000;y=d.y_utm.to_numpy(float)/1000
-  observed=-d.reference_m.to_numpy(float);predicted=-d.prediction_m.to_numpy(float)
-  vmax=max(2.,float(np.ceil(max(np.percentile(observed,98),np.percentile(predicted,98))/2)*2))
+  observed=d.reference_m.to_numpy(float);predicted=d.prediction_m.to_numpy(float)
+  observed_depth=-observed;predicted_depth=-predicted
+  vmax=max(2.,float(np.ceil(max(np.percentile(observed_depth,98),np.percentile(predicted_depth,98))/2)*2))
+  fig=plt.figure(figsize=(10.2,5.45),facecolor="white")
+  gs=fig.add_gridspec(2,2,left=.035,right=.93,top=.97,bottom=.115,
+                     height_ratios=[1,.055],wspace=.13,hspace=.20)
   for c,values in enumerate((observed,predicted)):
-   ax=fig.add_subplot(gs[r,c],projection="3d")
-   results_surface_3d(ax,x,y,values,site,vmax);panel_tag(ax,chr(97+r*2+c),fontsize=9)
-  cax=fig.add_subplot(gs[r,2]);cb=fig.colorbar(ScalarMappable(norm=Normalize(0,vmax),cmap=DEPTH_CMAP),cax=cax)
-  cb.set_label("Depth (m; positive down)",fontsize=6.5);cb.ax.tick_params(labelsize=5.8,pad=1)
- save(fig,"Figure_06_results_3d")
+   ax=fig.add_subplot(gs[0,c],projection="3d")
+   results_surface_3d(ax,x,y,values,site,vmax)
+   panel_tag(ax,chr(97+site_index*2+c),fontsize=11)
+  cax=fig.add_subplot(gs[1,:])
+  cb=fig.colorbar(ScalarMappable(norm=Normalize(0,vmax),cmap=DEPTH_CMAP),
+                  cax=cax,orientation="horizontal")
+  cb.set_label("Depth below local zero (m; positive down)",fontsize=8.5,labelpad=2)
+  cb.ax.tick_params(labelsize=7.5,pad=1)
+  site_id=("anza_agadir","ras_el_ma")[site_index]
+  save(fig,f"Figure_{6+site_index:02d}_results_3d_{site_id}")
 
 def fig_s2_residual_maps():
  fig,axes=plt.subplots(1,2,figsize=(6.8,3.9),constrained_layout=True)
@@ -385,6 +430,6 @@ def fig_s1_disagreement():
  save(fig,"Figure_S1_model_disagreement")
 def main():
  style(); fig01_data_overview(); fig02_cartographic_method(); fig04_spatial_validation(); fig05_errors(); fig05_results_maps(); fig06_results_3d(); fig_s1_disagreement(); fig_s2_residual_maps()
- print("Saved six main cartographic/results figures and two supplementary maps to",OUT)
+ print("Saved seven main cartographic/results figures and two supplementary maps to",OUT)
 if __name__=="__main__": main()
 

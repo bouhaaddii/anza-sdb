@@ -36,7 +36,7 @@ Three buffered alongshore zones rotate through training, validation, and test ro
 - `code/train_models.py`: trains the selected models across spatial folds.
 - `code/evaluate_results.py`: assembles out-of-fold predictions and per-site evaluation tables.
 - `code/compare_site_results.py`: creates the two-site comparison table and relative-skill figure without pooling the local elevations.
-- `code/make_advanced_figures.py`: creates Figures 1–6 and Supplementary Figures S1–S2 from the saved samples and predictions.
+- `code/make_advanced_figures.py`: creates Figures 1–7 and Supplementary Figures S1–S2 from the saved samples and predictions. Site-specific 3D Figures 6 and 7 show survey and held-out XYZ surfaces separately at larger scale, with numeric UTM X/Y coordinates, local survey elevation Z in metres, and supported isobath projections. Their vertical dimension uses a fixed 40× exaggeration; amber marks estimates above the local zero.
 - `data/raw/`: source bathymetry and HLS imagery used by the study.
 - `data/processed/`: site-specific sample arrays and processing summaries.
 - `results/`: trained model outputs, out-of-fold predictions, and evaluation tables, kept in separate site folders.
