@@ -27,6 +27,7 @@ MODELS=["CNN","RatioCNN","CNN_BiLSTM","DenseCNN","DepthBinCNN","StumpfRatio","Ra
 PRETTY={"CNN":"CNN","RatioCNN":"RatioCNN","CNN_BiLSTM":"CNN–BiLSTM","DenseCNN":"DenseCNN","DepthBinCNN":"DepthBinCNN","StumpfRatio":"Stumpf log-ratio","RandomForest":"Random forest"}
 MODEL_COLORS={"CNN":"#277DA1","RatioCNN":"#43AA8B","CNN_BiLSTM":"#F8961E","DenseCNN":"#845EC2","DepthBinCNN":"#D45087","StumpfRatio":"#64748B","RandomForest":"#90BE6D"}
 ZONE_COLORS={0:"#2864A5",1:"#F2A541",2:"#369A78"}
+MAP_DOT_SIZE=1.8  # Match the small 30 m cell markers in Supplementary Figures S1–S2.
 
 def style():
  plt.rcParams.update({"font.family":"DejaVu Sans","font.size":8.2,"axes.titlesize":8.8,"axes.labelsize":7.8,"axes.spines.top":False,"axes.spines.right":False,"axes.edgecolor":"#B8C4D0","axes.linewidth":.7,"axes.labelcolor":"#172033","xtick.color":"#334155","ytick.color":"#334155","text.color":"#172033","figure.facecolor":"white","axes.facecolor":"white","savefig.facecolor":"white","grid.color":"#DCE4EC","grid.linewidth":.5,"legend.frameon":False})
@@ -216,7 +217,7 @@ def fig01_data_overview():
   cb=fig.colorbar(im,ax=ax[1,c],fraction=.04,pad=.015)
   cb.set_label("Depth below local zero (m)",fontsize=6.5);cb.ax.tick_params(labelsize=5.8)
   sc=ax[2,c].scatter(pack["x_utm"]/1000,pack["y_utm"]/1000,
-                     c=pack["survey_points_per_pixel"],s=3.2,cmap="magma",
+                     c=pack["survey_points_per_pixel"],s=MAP_DOT_SIZE,cmap="magma",
                      linewidths=0,alpha=.88,rasterized=True)
   ax[2,c].set_title(f"({chr(101+c)}) Sounding support · n={len(pack['y']):,} cells",
                     loc="left",weight="bold")
@@ -280,7 +281,7 @@ def fig04_spatial_validation():
  for c,site in enumerate(SITES):
   pack,rgb,extent,_=context(site,pad=21); ax=fig.add_subplot(gs[0,c]); ax.imshow(rgb,extent=extent,origin="upper",alpha=.78,interpolation="nearest")
   for z in range(3):
-   m=pack["zones"]==z; ax.scatter(pack["x_utm"][m]/1000,pack["y_utm"][m]/1000,s=3.1,c=ZONE_COLORS[z],edgecolors="white",linewidths=.12,label=f"Zone {z}",rasterized=True)
+   m=pack["zones"]==z; ax.scatter(pack["x_utm"][m]/1000,pack["y_utm"][m]/1000,s=MAP_DOT_SIZE,c=ZONE_COLORS[z],linewidths=0,label=f"Zone {z}",rasterized=True)
   ax.set_title(site["name"],weight="bold",fontsize=8.8); map_axes(ax,site,extent); north(ax); ax.legend(loc="lower left",fontsize=6.5,ncol=3,frameon=True,facecolor="white",framealpha=.9)
   scalebar(ax,extent)
  tabax=fig.add_subplot(gs[1,:]); tabax.axis("off")
@@ -403,7 +404,7 @@ def fig06_prediction_maps():
   norm=plt.Normalize(vmin=0,vmax=lim)
   for c,(field,label) in enumerate((("reference_m","Aggregated survey z"),("prediction_m","Held-out prediction"))):
    ax=axes[r,c]; ax.imshow(rgb,extent=extent,origin="upper",alpha=.35,interpolation="nearest")
-   sc=ax.scatter(d.x_utm/1000,d.y_utm/1000,c=-d[field],s=9 if len(d)>2000 else 13,cmap=DEPTH_CMAP,norm=norm,linewidths=.18,edgecolors="white",rasterized=True)
+   sc=ax.scatter(d.x_utm/1000,d.y_utm/1000,c=-d[field],s=MAP_DOT_SIZE,cmap=DEPTH_CMAP,norm=norm,linewidths=0,rasterized=True)
    ax.set_title(f"{site['name']} · {label}\n{PRETTY[model]} · RMSE {rm[model]:.2f} m",loc="left",fontsize=7.8,weight="bold")
    map_axes(ax,site,extent); north(ax); scalebar(ax,extent)
   cax=fig.add_subplot(gs[r,2]); cb=fig.colorbar(sc,cax=cax)
@@ -417,7 +418,7 @@ def fig06_residual_maps():
  for ax,site in zip(axes,SITES):
   pack,rgb,extent,_=context(site,pad=22); d=pd.read_csv(site["results"]/"out_of_fold_predictions.csv"); rm=d.groupby("model").residual_m.apply(lambda v:float(np.sqrt(np.mean(np.asarray(v,float)**2)))); model=str(rm.idxmin()); d=d[d.model==model]
   lim=max(.5,float(np.percentile(np.abs(d.residual_m),98))); ax.imshow(rgb,extent=extent,origin="upper",alpha=.60,interpolation="nearest")
-  sc=ax.scatter(d.x_utm/1000,d.y_utm/1000,c=d.residual_m,s=12,cmap="RdBu_r",norm=TwoSlopeNorm(vmin=-lim,vcenter=0,vmax=lim),linewidths=.15,edgecolors="white",rasterized=True)
+  sc=ax.scatter(d.x_utm/1000,d.y_utm/1000,c=d.residual_m,s=MAP_DOT_SIZE,cmap="RdBu_r",norm=TwoSlopeNorm(vmin=-lim,vcenter=0,vmax=lim),linewidths=.15,edgecolors="white",rasterized=True)
   ax.set_title(f"{site['name']} · {PRETTY[model]} · RMSE {rm[model]:.2f} m",fontsize=8.2,weight="bold"); map_axes(ax,site,extent); north(ax); scalebar(ax,extent)
   cb=fig.colorbar(sc,ax=ax,fraction=.045,pad=.025); cb.set_label("z residual: prediction − survey (m)",fontsize=7); cb.ax.tick_params(labelsize=6.5)
  fig.suptitle("Spatial pattern of residuals for the lowest-RMSE model at each site",fontsize=11.2,weight="bold",color="#17324D")
@@ -464,7 +465,7 @@ def fig_s2_residual_maps():
   model=str(rm.idxmin());d=data[data.model==model]
   lim=max(.5,float(np.percentile(np.abs(d.residual_m),98)))
   ax.imshow(rgb,extent=extent,origin="upper",alpha=.2,interpolation="nearest")
-  sc=ax.scatter(d.x_utm/1000,d.y_utm/1000,c=d.residual_m,s=1.8,cmap="RdBu_r",
+  sc=ax.scatter(d.x_utm/1000,d.y_utm/1000,c=d.residual_m,s=MAP_DOT_SIZE,cmap="RdBu_r",
                 norm=TwoSlopeNorm(vmin=-lim,vcenter=0,vmax=lim),
                 linewidths=0,rasterized=True,alpha=.9)
   ax.set_title(f"{site['name']} · {PRETTY[model]}",fontsize=7.2,weight="bold")
@@ -482,7 +483,7 @@ def fig_s1_disagreement():
  fig,axes=plt.subplots(1,2,figsize=(6.8,4.0),constrained_layout=True)
  for ax,site in zip(axes,SITES):
   d=pd.read_csv(site["results"]/"out_of_fold_predictions.csv"); wide=d.pivot_table(index=["pixel_id","x_utm","y_utm"],columns="model",values="prediction_m",aggfunc="first").reindex(columns=MODELS); spread=wide.std(axis=1,ddof=0).to_numpy(float); xy=wide.index.to_frame(index=False)
-  sc=ax.scatter(xy.x_utm/1000,xy.y_utm/1000,c=spread,s=1.8,cmap="cividis",vmin=0,vmax=max(.8,float(np.percentile(spread,98))),linewidths=0,rasterized=True)
+  sc=ax.scatter(xy.x_utm/1000,xy.y_utm/1000,c=spread,s=MAP_DOT_SIZE,cmap="cividis",vmin=0,vmax=max(.8,float(np.percentile(spread,98))),linewidths=0,rasterized=True)
   ax.set_title(site["name"],fontsize=8.8,weight="bold"); ax.set_xlabel("UTM easting (km)",fontsize=7); ax.set_ylabel(f"UTM northing (km; {site['utm']})",fontsize=7); ax.set_aspect("equal",adjustable="box"); ax.tick_params(labelsize=6.5); ax.grid(alpha=.35); north(ax)
   cb=fig.colorbar(sc,ax=ax,fraction=.045,pad=.025); cb.set_label("Across-model SD (m)",fontsize=7); cb.ax.tick_params(labelsize=6.5)
  fig.suptitle("Supplementary Figure S1 · spatial variation in model disagreement",fontsize=11.3,weight="bold",color="#17324D")
