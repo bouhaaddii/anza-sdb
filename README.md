@@ -1,124 +1,90 @@
-# Anza Coastal Study: Code and Data
+# Mapping the Hidden Coast
 
-This repository provides the research code, study inputs, prepared datasets, archived model outputs, and visualization scripts for the Anza coastal remote-sensing study. It contains the materials used to prepare data, reproduce retained results, run the documented spatial experiment, and create figures. The article manuscript is not included.
+## Two-site satellite-derived bathymetry at Anza and Ras El Ma, Morocco
+
+This repository contains the analysis code, source inputs, prepared samples, saved spatial-holdout outputs, and figures for a study of shallow-water bathymetry at two Moroccan coasts. It compares five convolutional neural network variants designed by the first author with a Stumpf-style blue–green log-ratio baseline and a random-forest baseline using NASA/USGS Harmonized Landsat and Sentinel-2 (HLS) S30 imagery.
+
+The repository now contains only the materials for this Anza–Ras El Ma study. The article manuscript and submission correspondence are not part of this code-and-data release.
+
+## Study sites and inputs
+
+| Site | Bathymetric survey | HLS acquisition | Tile and CRS | Local vertical reference | Retained 30 m cells |
+| --- | --- | --- | --- | --- | ---: |
+| Anza / Agadir, Atlantic coast | 10 November 2022 | 10 November 2022 | T29RMP, EPSG:32629 | Hydrographic zero of the Port of Agadir | 1,373 |
+| Ras El Ma / Ras Kebdana, Mediterranean coast | 8 August 2024 | 7 August 2024 | T30SWD, EPSG:32630 | Hydrographic zero of the Port of Ras Kebdana | 3,817 |
+
+Satellite inputs are the 30 m HLS S30 v2.0 reflectance bands B02 (blue), B03 (green), B04 (red), and B08 (near infrared), together with Fmask. HLS reflectance values are scaled by 0.0001. Fmask fill, cloud, adjacent cloud/shadow, shadow, and snow/ice flags are excluded; the water flag is retained as a diagnostic. Product identifiers, acquisition dates, and source details are in [`data/raw/sentinel2/scene_manifest.json`](data/raw/sentinel2/scene_manifest.json). Cite the HLS S30 collection using [DOI 10.5067/HLS/HLSS30.002](https://doi.org/10.5067/HLS/HLSS30.002) and acknowledge NASA/USGS LP DAAC. See the official [HLS v2.0 User Guide](https://lpdaac.usgs.gov/documents/1698/HLS_User_Guide_V2.pdf).
+
+The survey sources are in `data/raw/survey/`. The Ras El Ma survey drawing is included as supporting provenance for its coordinate and vertical-reference notes. Survey coordinates were transformed to each HLS grid and aggregated by 30 m cell. Each retained cell has a 9 × 9 × 4 reflectance patch. Cells with inadequate sounding support, mixed land/water signs, or invalid patch quality were removed.
+
+**The two vertical references are separate local port hydrographic zeros.** Anza uses the Port of Agadir zero; Ras El Ma uses the Port of Ras Kebdana zero. The Ras drawing's ΔZ = −47 m geodetic datum-translation parameter is not a levelling connection between these port zeros and was not applied as one. The results are evaluated separately within each site; the experiment does not test transfer from one coast to the other. Ras imagery is one day older than its survey. Neither dataset has a documented sounding-time/tide correction or point-level vertical uncertainty.
+
+## Models and evaluation
+
+The five author-designed CNN variants are `CNN`, `RatioCNN`, `CNN_BiLSTM`, `DenseCNN`, and `DepthBinCNN`. The conventional baseline is called **CNN**; “SDB” describes the application and is not part of that model's name. The comparisons also include a training-zone-calibrated Stumpf-style log-ratio regression and a random forest. Three buffered alongshore zones rotate through training, validation, and held-out test roles independently at each site.
+
+The archived out-of-fold summaries currently report:
+
+| Site | Lowest-RMSE method | RMSE | Lowest-MAE method | MAE |
+| --- | --- | ---: | --- | ---: |
+| Anza / Agadir | Stumpf-style log-ratio | 2.788 m | CNN–BiLSTM | 2.253 m |
+| Ras El Ma / Ras Kebdana | RatioCNN | 0.500 m | CNN | 0.388 m |
+
+These are errors against aggregated local survey labels in metres, not independent hydrographic accuracy measurements. Differences between sites must not be interpreted as absolute vertical agreement because the reference zeros, survey support, and acquisition timing differ. Fold counts and per-model values are in the site-specific `results/` folders.
+
+## Cartographic outputs
+
+The five main figures and two supplementary figures are in [`figures/rse_14p/`](figures/rse_14p/), each as a high-resolution PNG and a vector PDF:
+
+1. Site, satellite-image, survey-depth, and sounding-support overview.
+2. Map-led illustration of the actual HLS patch, four-band 9 × 9 pixel cube, and local survey support with one saved held-out centre estimate.
+3. Buffered spatial folds and rotating training, validation, and test roles.
+4. Modern held-out validation panels: observed-versus-predicted density and residual trends by depth.
+5. Survey and held-out depth isobaths with supported 3D views at both sites.
+6. Supplementary inter-model disagreement maps.
+7. Supplementary spatial residual maps.
+
+The map panels use an eight-point compass rose with N, E, S, and W labels. Depth contours are drawn at 2 m intervals. The 3D and filled-surface panels are cartographic displays built from linear triangles between neighbouring 30 m cell centres; triangles with an edge longer than 45 m are masked, and no surface is extrapolated beyond supported cells. These displays are not extra model predictions. The vertical axis is exaggerated for visual clarity, and each site keeps its own depth scale and datum.
 
 ## Repository contents
 
-- `original_scripts/`: source scripts supplied for the study, including the original model and plotting implementations.
-- `src/`: shared data preparation, model, metric, and plotting functions used by the command-line pipeline.
-- `run.py` and `pipeline.py`: commands to check source identity, verify the data bundle, prepare data, reproduce results, train models, and create figures.
-- `SDB_Visualisation_Avancee_Corrigee.py`: detailed evaluation and result visualizations.
-- `SDB_Visualisation_Publication.py`, `SDB_Cartes_Publication.py`, and `result_figures.py`: publication figures and maps from saved outputs.
-- `data/anza_study/reference/`: supplied imagery, survey material, and saved reference arrays.
-- `data/anza_study/prepared/`: prepared patches, labels, and train/validation/test memberships.
-- `data/anza_study/experiments/`: saved spatial-experiment weights, histories, predictions, and metrics.
-- `data/anza_study/reproduced/`: retained predictions and paired reference–prediction tables.
-- `data/anza_study/tables/` and `data/anza_study/audit/`: derived tables, provenance notes, and validation checks.
-- `data/anza_study/file_manifest.json`: sizes and SHA-256 hashes for the released data files.
-- `studies/hls_multisite/`: a separate HLS S30 two-site experiment, including its executed scripts, selected source inputs, prepared samples, saved fold outputs, metrics, and figures. It does not replace the original 2021 RGB study above.
+- `code/prepare_hls_data.py` and `code/prepare_ras_hls_data.py`: build one sample per eligible HLS cell from each survey and scene.
+- `code/models.py`: defines the five CNN variants and masked patch loss.
+- `code/train_models.py`: trains the CNNs and baselines using buffered spatial folds.
+- `code/evaluate_results.py`: creates site-specific out-of-fold predictions and evaluation summaries.
+- `code/compare_site_results.py`: summarizes site-local metrics without pooling the local vertical zeros.
+- `code/make_advanced_figures.py`: builds the five main and two supplementary map-led figures from the saved inputs and predictions.
+- `code/requirements.txt`: Python package versions used by the analysis.
+- `data/`: selected HLS bands, survey inputs, site metadata, and prepared sample arrays.
+- `results/`: saved model weights, fold predictions, metrics, and site-comparison tables.
+- `figures/rse_14p/`: final figures in PNG and PDF formats.
 
-## Models
+## Run the analysis
 
-The study compares CNN, Pi-CNN, CNN-BiLSTM, FCNN, and SeaBed-Net. The model historically named `sdb_cnn` is a conventional CNN architecture; it is not a separate model called “SDB-CNN.” Use `cnn` as its identifier for a new training run. `sdb_cnn` remains accepted only as a legacy identifier for archived results.
-
-## Verify the release and create figures
-
-Use Python 3.10 or 3.11. From the repository root, run:
-
-```powershell
-python run.py check-code
-python run.py verify --data-root data/anza_study
-python run.py figures --data-root data/anza_study --work-root work/anza
-```
-
-The launcher places generated files in the work directory and leaves the released data bundle unchanged. Run `python run.py --help`, or add `--help` to a command, to see other options.
-
-The advanced visualization scripts can also be run directly in an environment with the dependencies in `requirements.txt`:
-
-```powershell
-python SDB_Visualisation_Avancee_Corrigee.py --data-root data/anza_study --out work/SDB_Resultats_Corriges
-python SDB_Visualisation_Publication.py --results work/SDB_Resultats_Corriges --data-root data/anza_study --out work/SDB_Resultats_Figures
-python SDB_Cartes_Publication.py --results work/SDB_Resultats_Corriges --data-root data/anza_study --out work/SDB_Cartes
-```
-
-Install dependencies in an isolated Python 3.11 environment on Windows with:
+Use Python 3.11. From the repository root, create an environment and install the listed packages:
 
 ```powershell
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+python -m pip install -r code\requirements.txt
 ```
 
-## Data provenance and interpretation
-
-The released input image is an exact pixel-for-pixel crop of the 10 m TCI true-colour component in Sentinel-2A MSI Level-2A product `S2A_MSIL2A_20211210T112451_N0500_R037_T29RMP_20221228T204212.SAFE`. Its SAFE metadata verify the 10 December 2021 acquisition date, processing baseline 05.00 and generation date of 28 December 2022. The released 202 × 210 GeoTIFF matches the source TCI at row offset 2985 and column offset 3475 in tile T29RMP (EPSG:32629). The model uses the product’s 8-bit display RGB composite, not its calibrated BOA reflectance bands. Product-level quality reports pass general, geometric, radiometric and sensor checks; product metadata report 0.016484% cloudy pixels. In the cropped 20 m scene-classification layer, 27 cells are labelled medium-probability cloud, 3 cloud shadow and 494 snow/ice. These classifier labels were not used to mask the model inputs. The six prepared channels are interpolated combinations of RGB and are not six measured spectral bands. Because the input is clipped from Sentinel data, the required attribution is “Contains modified Copernicus Sentinel data 2021.” See `data/anza_study/audit/image_quality.json` for the source metadata and crop check.
-
-The survey plan identifies GEOMAITRISE SARL AU as producer and TANGER MED ENGINEERING as client. The available plan does not establish field-survey dates, the target-generation workflow, confirmed vertical units, or a vertical datum. Targets are signed elevations in nominal metres, include positive land values, and must not automatically be interpreted as water depth. See `data/anza_study/dataset_metadata.json` and the audit files for the available provenance and its limitations.
-
-The spatial partition prevents shared input pixels between training, validation, and test subsets. It covers one scene, one seed, and one partition and does not provide external validation. Historical results are retained for comparison; the original historical test partition contains patches that share input pixels with training. The README and archived metrics describe these limitations so the results are not mistaken for independent external validation.
-
-## Additional study: two-site HLS coastal elevation experiment
-
-The separate [`studies/hls_multisite/`](studies/hls_multisite/) folder contains the complete executed HLS experiment for Anza and Ras El Ma/Ras Kebdana. It includes only the scripts used in this study, the selected input files, prepared data, saved fold predictions and weights, evaluation tables, and code-generated figures. The earlier 2021 RGB study at the repository root remains a separate project.
-
-The study-specific English README at [`studies/hls_multisite/README.md`](studies/hls_multisite/README.md) documents its inputs, local vertical references, methods, figures, saved results, and commands for regenerating the analysis.
-
-### Inputs and provenance
-
-| Site | Survey date and label reference | HLS input | Retained samples |
-| --- | --- | --- | ---: |
-| Anza / Agadir | 10 November 2022; z in metres; Port of Agadir hydrographic zero reported by the user | HLS S30 v2.0, tile T29RMP, acquired 10 November 2022 | 1,373 |
-| Ras El Ma / Ras Kebdana | 8 August 2024; z in metres; Port of Ras Kebdana hydrographic zero stated in the survey-plan cartouche | HLS S30 v2.0, tile T30SWD, acquired 7 August 2024 | 3,817 |
-
-Each scene uses the 30 m B02, B03, B04, and B08 reflectance bands and Fmask. HLS reflectance integers are multiplied by 0.0001. The scripts exclude fill, cloud, adjacent cloud/shadow, shadow, and snow/ice flags; the water flag is retained as a diagnostic. See the [NASA/USGS HLS v2.0 User Guide](https://lpdaac.usgs.gov/documents/1698/HLS_User_Guide_V2.pdf), the [HLS S30 product DOI](https://doi.org/10.5067/HLS/HLSS30.002), and `studies/hls_multisite/data/raw/sentinel2/scene_manifest.json` for product identifiers and selected files.
-
-Survey labels are aggregated to one observation per HLS pixel. The 9 × 9 input patches have a 120 m radius. Cells with fewer than three survey points and mixed-sign elevation cells are excluded. Ras El Ma's 10,595 exact duplicate XYZ records were removed; repeated XY positions are represented by their median z, with the observed 0.03 m spread documented in the processed-data metadata. Three alongshore spatial zones are separated by a patch-footprint buffer and rotated through the folds.
-
-The two surveys use distinct local port hydrographic zeros. Anza's vertical reference was reported by the user and is not documented in the supplied plan extract. Ras El Ma's HLS scene predates its survey by one day. There is no documented water-level correction, point-level uncertainty model, or vertical tie between the two port zeros. Therefore, the reported metrics are separate site-specific spatial evaluations; they do not demonstrate cross-site transfer, and absolute elevations or errors must not be pooled between sites.
-
-### Saved spatial holdout results
-
-| Site | Model with lowest pooled out-of-fold RMSE | RMSE (m) | MAE (m) |
-| --- | --- | ---: | ---: |
-| Anza / Agadir | StumpfRatio | 2.79 | 2.42 |
-| Ras El Ma / Ras Kebdana | RatioCNN | 0.50 | 0.40 |
-
-These are out-of-fold predictions from three buffered spatial folds within each site. They are not an independent external validation. Refer to the site-specific `evaluation_summary.json` files for the full seven-model results and fold variability, and to the figures for spatial patterns and error distributions. The metrics are errors against the aggregated survey labels in metres, not a claim of universally accurate bathymetry.
-
-### Run the scripts
-
-From the `studies/hls_multisite/` directory, create a Python 3.11 environment and install `code/requirements.txt`:
+The released prepared arrays and fold outputs are already included. Regenerate the current figures and the site-wise comparison table with:
 
 ```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r code/requirements.txt
+python code\compare_site_results.py
+python code\make_advanced_figures.py
 ```
 
-Prepare both site datasets, train the seven models in three spatial folds, and regenerate the evaluations:
+To rebuild prepared arrays from the source inputs:
 
 ```powershell
-python code/prepare_hls_data.py
-python code/prepare_ras_hls_data.py
-python code/train_models.py --data-path data/processed/samples.npz --results-dir results/hls_2022-11-10/folds --site "Anza, Agadir, Morocco" --vertical-reference "Local hydrographic zero of the Port of Agadir (user-reported)"
-python code/evaluate_results.py --data-path data/processed/samples.npz --results-dir results/hls_2022-11-10 --site "Anza, Agadir, Morocco" --vertical-reference "Local hydrographic zero of the Port of Agadir (user-reported)"
-python code/train_models.py --data-path data/processed/ras_el_ma_2024-08-08/samples.npz --results-dir results/hls_ras_2024-08-07/folds --site "Ras El Ma / Ras Kebdana, Morocco" --vertical-reference "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)"
-python code/evaluate_results.py --data-path data/processed/ras_el_ma_2024-08-08/samples.npz --results-dir results/hls_ras_2024-08-07 --site "Ras El Ma / Ras Kebdana, Morocco" --vertical-reference "Local hydrographic zero of the Port of Ras Kebdana (survey-plan cartouche)"
-python code/make_figures.py
-python code/make_figures.py --data-path data/processed/ras_el_ma_2024-08-08/samples.npz --results-dir results/hls_ras_2024-08-07 --scene-dir data/raw/sentinel2/HLS_S30_2024-08-07_RasElMa/T30SWD --product HLS.S30.T30SWD.2024220T105031.v2.0 --figures-dir figures/ras_el_ma --utm-zone 30N --scene-date "7 Aug 2024"
-python code/compare_site_results.py
+python code\prepare_hls_data.py
+python code\prepare_ras_hls_data.py
 ```
 
-Training may take substantial time on CPU. The archived fold weights, predictions, metrics, and figures are included, so the current results can be inspected without rerunning model fitting.
+To retrain, run `python code\train_models.py --help` for the available options. The saved fold predictions and weights are provided so the reported comparisons can be inspected without training again.
 
-## Citation and licenses
+## Data use and attribution
 
-Suggested citation for this release:
-
-> Bouhadi, A., Khali Issa, L., Raissouni, A., & El Arrim, A. (2026). *Anza Coastal Study: Code and Data* (Version 1.0.0) [Research code and data]. GitHub. https://github.com/bouhaaddii/anza-sdb
-
-The software is released under the MIT License in `LICENSE`. Author-created study materials and model-derived results for which the authors hold the relevant rights are released under Creative Commons Attribution 4.0 International (CC BY 4.0). Sentinel-derived image files and image inputs are identified individually in the data manifest and remain subject to the official [Sentinel Data Legal Notice](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice); the CC BY notice does not replace those terms. The required attribution for modified Copernicus data is “Contains modified Copernicus Sentinel data 2021.” The ESA data citation DOI is [10.5270/S2_-znk9xsj](https://doi.org/10.5270/S2_-znk9xsj). Please cite the article when its final bibliographic details become available. No DOI is assigned to this GitHub repository version.
-
-## Versioning
-
-The repository does not currently have a Git tag or DOI. The data integrity manifest covers files under `data/anza_study/`, excluding the manifest itself; it does not cover the separate HLS study folder. Recompute hashes after changing the corresponding data files.
+Code is released under the MIT License in [`LICENSE`](LICENSE). Author-created survey tables, prepared arrays, model outputs, and figures are released under CC BY 4.0 to the extent that the authors hold the relevant rights; see [`DATA_LICENSE.md`](DATA_LICENSE.md). HLS inputs remain subject to the NASA/USGS LP DAAC reuse terms and are not relicensed here. Please cite HLS using its DOI and retain the source-product attribution when redistributing the satellite inputs.

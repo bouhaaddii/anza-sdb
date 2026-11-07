@@ -1,6 +1,0 @@
-model,total_parameters,trainable_parameters,output_shape
-sdb_cnn,105377,104929,"(None, 1)"
-pi_cnn,105441,104993,"(None, 1)"
-cnn_bilstm,204193,203745,"(None, 1)"
-fcnn,197057,196353,"(None, 9, 9, 1)"
-seabed_net,115845,115397,"[(None, 1), (None, 4)]"

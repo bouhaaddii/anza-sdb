@@ -1,0 +1,38 @@
+{
+  "study": "Two-site satellite-derived bathymetry: Anza and Ras El Ma / Ras Kebdana, Morocco",
+  "source": "NASA/USGS Harmonized Landsat and Sentinel-2 (HLS), S30 Version 2.0",
+  "collection_doi": "https://doi.org/10.5067/HLS/HLSS30.002",
+  "bands_used": [
+    "B02",
+    "B03",
+    "B04",
+    "B08",
+    "Fmask"
+  ],
+  "sites": [
+    {
+      "site": "Anza / Agadir, Atlantic coast",
+      "survey_date": "2022-11-10",
+      "imagery_date": "2022-11-10",
+      "product": "HLS.S30.T29RMP.2022314T112209.v2.0",
+      "tile": "T29RMP",
+      "collection": "HLSS30.020",
+      "granule_cloud_cover_percent": 2,
+      "crs": "EPSG:32629",
+      "local_vertical_reference": "Hydrographic zero of the Port of Agadir, confirmed by the survey-data owner"
+    },
+    {
+      "site": "Ras El Ma / Ras Kebdana, Mediterranean coast",
+      "survey_date": "2024-08-08",
+      "imagery_date": "2024-08-07",
+      "product": "HLS.S30.T30SWD.2024220T105031.v2.0",
+      "tile": "T30SWD",
+      "collection": "HLSS30.020",
+      "granule_cloud_cover_percent": 3,
+      "crs": "EPSG:32630",
+      "local_vertical_reference": "Hydrographic zero of the Port of Ras Kebdana, as stated in the survey-plan cartouche"
+    }
+  ],
+  "quality": "Fmask fill, cloud, adjacent cloud/shadow, shadow, and snow/ice flags were excluded. The water flag is retained as a diagnostic.",
+  "note": "The two sites retain distinct local port zeros; no vertical tie between them is documented."
+}
